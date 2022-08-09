@@ -101,7 +101,7 @@ def showGraph():
 
 @funcs.route("/shortest-path/<f>/<n>", methods=['GET'])
 def short(f, n):
-    def findShortestPath(start, end, path=[], cost=0): #start and end should be plaq values not objects
+    def findShortestPath(start, end, path=[], cost=0): 
 
         path = path + [start]
 
@@ -160,18 +160,21 @@ def allPaths(f, n):
 def allPathsLimited(f):
 
     def findAllRealPaths(start, end, limit, path=[], paths=[], cost=0, ):
-        path = path + [start]
+        path = path + [(start.cordx, start.cordy)]
 
-        if start == end:
+        if start.plaq == end.plaq:
             pair = [path, cost]
             paths.append(pair)
 
         if cost > limit:
             return None
 
-        for con in Edge.query.filter_by(node1=start):
-            if con.node2 not in path:
-                findAllRealPaths(start=con.node2, end=end, limit=limit,path=path, paths=paths, cost=(cost + con.distance))
+        for con in Edge.query.filter_by(node1=start.plaq):
+
+            node = Poste.query.filter_by(plaq = con.node2).first()
+
+            if (node.cordx, node.cordy) not in path:
+                findAllRealPaths(start=node, end=end, limit=limit,path=path, paths=paths, cost=(cost + con.distance))
 
         return paths
 
@@ -182,7 +185,7 @@ def allPathsLimited(f):
 
         for node in Poste.query.all():
 
-            paths_node = findAllRealPaths(start, node.plaq, limit)
+            paths_node = findAllRealPaths(start, node, limit)
 
             for path in paths_node:
                 if path not in paths:
@@ -192,7 +195,7 @@ def allPathsLimited(f):
 
     n1 = int(f)
     
+    p1 = Poste.query.filter_by(plaq=n1).first()
 
-
-    x = visitAllNeighboursLimited(n1, 100)
+    x = visitAllNeighboursLimited(p1, 100)
     return jsonify(x)
