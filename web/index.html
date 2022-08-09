@@ -1,0 +1,48 @@
+<html>
+
+    <head>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <title>Test</title>
+        <script src="./scripts/main.js"></script>
+        <script src="./scripts/gmaps.js"></script>
+        
+        <link rel="stylesheet" href="./styles/main.css">
+    </head>
+    <body>
+        <p>
+            Click to Say Hello
+        </p>
+
+        <button onclick={sayHello()}>say hellow</button>
+
+        <h2>Criar poste</h2>
+        <p>fPlaq</p>
+        <input type="text" id="fPlaq">
+        <p>fcoord</p>
+        <input type="text" id="fcoord">
+
+        <p>nPlaq</p>
+        <input type="text" id="nPlaq">
+        <p>ncoord</p>
+        <input type="text" id="ncoord">
+
+        <p>distance</p>
+        <input type="text" id="distance">
+
+        <button type="submit" onclick={postPoste()}>Criar</button>
+
+        <h1>Teste do Gmaps</h1>
+
+        <div id="map"></div>
+                
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQULg7AsTLOJeJm3KbPrI4E_TeLPlyg30&callback=initMap&v=weekly"
+            defer
+    ></script>
+ 
+
+
+
+    </body>
+</html>
+
