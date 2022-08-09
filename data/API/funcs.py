@@ -155,3 +155,44 @@ def allPaths(f, n):
 
     x = findAllPaths(n1, n2)
     return jsonify(x)
+
+@funcs.route("/all-paths-limited/<f>/", methods=["GET"])
+def allPathsLimited(f):
+
+    def findAllRealPaths(start, end, limit, path=[], paths=[], cost=0, ):
+        path = path + [start]
+
+        if start == end:
+            pair = [path, cost]
+            paths.append(pair)
+
+        if cost > limit:
+            return None
+
+        for con in Edge.query.filter_by(node1=start):
+            if con.node2 not in path:
+                findAllRealPaths(start=con.node2, end=end, limit=limit,path=path, paths=paths, cost=(cost + con.distance))
+
+        return paths
+
+
+    def visitAllNeighboursLimited(start, limit): 
+
+        paths = []
+
+        for node in Poste.query.all():
+
+            paths_node = findAllRealPaths(start, node.plaq, limit)
+
+            for path in paths_node:
+                if path not in paths:
+                    paths.append(path)
+
+        return paths
+
+    n1 = int(f)
+    
+
+
+    x = visitAllNeighboursLimited(n1, 100)
+    return jsonify(x)

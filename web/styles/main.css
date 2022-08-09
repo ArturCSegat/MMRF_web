@@ -1,0 +1,60 @@
+body {
+    background-color: rgb(70, 79, 86);
+    color:rgb(225, 225, 225);
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+
+}
+
+
+h3 {
+    margin-top: 1em;
+}
+
+/* Set the size of the div element that contains the map */
+#map {
+    height: 50em;
+    /* The height is 400 pixels */
+    width: 100em;
+    /* The width is the width of the web page */
+
+    border-radius: 2em;
+
+    margin-top: 1.5em;
+
+  }
+
+
+#inps {
+
+    display: flex;
+
+    flex-direction: row; 
+
+    
+
+
+    
+}
+
+.central {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+}   
+
+.inp { 
+    background-color: rgb(129, 121, 123);
+    color: rgb(225, 225, 225);
+
+    border: 1px solid rgb(93, 18, 18);
+    
+    padding: 2px;
+
+    height: 2em;
+    width: 10em;
+    margin-right: 1em;
+
+
+}
