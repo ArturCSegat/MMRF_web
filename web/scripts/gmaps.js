@@ -5,14 +5,7 @@ async function branch(plaq){
     const response = await fetch(url)
     const data = await response.json()
 
-    for(let i = 0; i<data.length;i++){
-
-        for(let j = 0; j<data[i][0].length;j++){
-            console.log(data[i][0][j])
-        }
-
-        console.log("______________")
-    }
+    return data;
 }   
 
 let map;
@@ -23,17 +16,32 @@ async function initMap() {
     zoom: 3,
   });
 
-  all_paths_limited = await branch("1");
 
- 
 
-   /*  const line = new google.maps.Polyline({
-        path: new google.maps.LatLng(all_paths_limited[i][0]),
+
+  all_paths_limited = await branch("30061");
+
+  for(let i = 0; i<all_paths_limited.length;i++){
+
+      let path = [];
+
+      for(let j = 0; j<all_paths_limited[i][0].length;j++){
+          let cord  = new google.maps.LatLng(all_paths_limited[i][0][j][0], all_paths_limited[i][0][j][1]);
+          path.push(cord)
+      }
+      
+        const line = new google.maps.Polyline({
+        path: path,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 3,
-    }) */
+        map, map
+        }) 
+
+        console.log(path)
+      
   }
+}
 
 
 
