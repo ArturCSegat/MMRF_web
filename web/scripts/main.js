@@ -3,7 +3,7 @@ async function sayHello(){
     const response = await fetch(url)
     const data = await response.text(); // or response.json() if your server returns JSON
     console.log(data);
-    
+
 }
 
 
@@ -37,11 +37,13 @@ async function postPoste(){
     const method = "POST";
 
     const headers = {'Content-Type': 'application/json'};
-    
+
     const request = await fetch(url, {method:method, body:body, headers:headers})
 
     const data = await request.json();
 
     console.log(data);
+
+    window.location.reload()
 
 }
