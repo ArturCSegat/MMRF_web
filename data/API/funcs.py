@@ -10,19 +10,31 @@ from .models import Poste, Edge
 funcs = Blueprint("funcs", __name__)
 
 
-@funcs.route('/hello', methods=['GET'])
-def hello():
-    print("A")
+@funcs.route("add-vertex", methods=['POST']) #mostly testing doest seve much actual purpose
+def addVertex():
 
-    data = {
-        "a": 'a',
-        "b": 'b'
-    }
+    content_type = request.headers.get('Content-Type')
+    
+    if (content_type == 'application/json'):
 
-    hello = "Hello World"
+        body = request.json
 
+        fplaq = body['fplaq']
+        flng = body['fcoord']['x']
+        flat = body['fcoord']['y']
 
-    return hello
+        real_first = Poste.query.filter_by(plaq=fplaq).first()
+
+        if real_first is None:
+
+            n1 = Poste(plaq = fplaq, cordx = flng, cordy = flat)
+
+        db.session.add(n1)
+        db.session.commit()
+    
+        return body
+    else:
+        return 'Content-Type not supported!'
 
 @funcs.route("/add-edge", methods=['POST'])
 def addEdge():

@@ -3,8 +3,8 @@
     <head>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <title>Test</title>
-        <script src="./scripts/main.js"></script>
-        <script src="./scripts/gmaps.js"></script>
+        <script type="module"src="./scripts/main.js"></script>
+        <script type="module" src="./scripts/gmaps.js"></script>
         
         <link rel="stylesheet" href="./styles/main.css">
     </head>
@@ -29,7 +29,7 @@
         <p>distance</p>
         <input type="text" id="distance">
 
-        <button type="submit" onclick={postPoste()}>Criar</button>
+        <button type="submit" onclick={postEdge()}>Criar</button>
 
         <h1>Teste do Gmaps</h1>
 
