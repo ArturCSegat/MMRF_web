@@ -46,36 +46,25 @@ def addEdge():
         body = request.json
 
         fplaq = body['fplaq']
-        flng = body['fcoord']['x']
-        flat = body['fcoord']['y']
 
-        real_first = Poste.query.filter_by(plaq=fplaq).first()
+        n1 = Poste.query.filter_by(plaq=fplaq).first()
 
-        if real_first is None:
+        if n1 is None:
+            return 'Invalid font'
 
-            n1 = Poste(plaq = fplaq, cordx = flng, cordy = flat)
-        else:
-            n1 = real_first
 
         nplaq = body['nplaq']
-        nlng = body['ncoord']['x']
-        nlat = body['ncoord']['y']
 
-        real_second = Poste.query.filter_by(plaq=nplaq).first()
+        n2 = Poste.query.filter_by(plaq=nplaq).first()
 
-        if real_second is None:
-            n2 = Poste(plaq = nplaq, cordx = nlng, cordy = nlat)
-        else:
-            n2 = real_second
+        if n2 is None:
+            return 'invalid end'
 
         dist = body['distance']
 
         edge = Edge(node1 = n1.plaq, node2=n2.plaq, id=(str(n1.plaq) + str(n2.plaq)), distance=int(dist))
         edge2 = Edge(node1 = n2.plaq, node2=n1.plaq, id=(str(n2.plaq) + str(n1.plaq)), distance=int(dist))
 
-
-        db.session.add(n1)
-        db.session.add(n2)
         db.session.add(edge)
         db.session.add(edge2)
         db.session.commit()
