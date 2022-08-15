@@ -10,25 +10,11 @@ from .models import Poste, Edge
 funcs = Blueprint("funcs", __name__)
 
 
-@funcs.route('/hello', methods=['GET'])
-def hello():
-    print("A")
-
-    data = {
-        "a": 'a',
-        "b": 'b'
-    }
-
-    hello = "Hello World"
-
-
-    return hello
-
-@funcs.route("/add-edge", methods=['POST'])
-def addEdge():
+@funcs.route("add-vertex", methods=['POST']) #mostly testing doest seve much actual purpose
+def addVertex():
 
     content_type = request.headers.get('Content-Type')
-
+    
     if (content_type == 'application/json'):
 
         body = request.json
@@ -42,28 +28,43 @@ def addEdge():
         if real_first is None:
 
             n1 = Poste(plaq = fplaq, cordx = flng, cordy = flat)
-        else:
-            n1 = real_first
+
+        db.session.add(n1)
+        db.session.commit()
+    
+        return body
+    else:
+        return 'Content-Type not supported!'
+
+@funcs.route("/add-edge", methods=['POST'])
+def addEdge():
+
+    content_type = request.headers.get('Content-Type')
+
+    if (content_type == 'application/json'):
+
+        body = request.json
+
+        fplaq = body['fplaq']
+
+        n1 = Poste.query.filter_by(plaq=fplaq).first()
+
+        if n1 is None:
+            return 'Invalid font'
+
 
         nplaq = body['nplaq']
-        nlng = body['ncoord']['x']
-        nlat = body['ncoord']['y']
 
-        real_second = Poste.query.filter_by(plaq=nplaq).first()
+        n2 = Poste.query.filter_by(plaq=nplaq).first()
 
-        if real_second is None:
-            n2 = Poste(plaq = nplaq, cordx = nlng, cordy = nlat)
-        else:
-            n2 = real_second
+        if n2 is None:
+            return 'invalid end'
 
         dist = body['distance']
 
         edge = Edge(node1 = n1.plaq, node2=n2.plaq, id=(str(n1.plaq) + str(n2.plaq)), distance=int(dist))
         edge2 = Edge(node1 = n2.plaq, node2=n1.plaq, id=(str(n2.plaq) + str(n1.plaq)), distance=int(dist))
 
-
-        db.session.add(n1)
-        db.session.add(n2)
         db.session.add(edge)
         db.session.add(edge2)
         db.session.commit()
