@@ -4,7 +4,8 @@ from flask import Blueprint, request, redirect, render_template, after_this_requ
 from sqlalchemy.orm import query
 from . import db
 from .models import Poste, Edge
-
+from math import sin, cos, sqrt, atan2, radians
+from flask_cors import cross_origin
 
 
 funcs = Blueprint("funcs", __name__)
@@ -14,7 +15,7 @@ funcs = Blueprint("funcs", __name__)
 def addVertex():
 
     content_type = request.headers.get('Content-Type')
-    
+
     if (content_type == 'application/json'):
 
         body = request.json
@@ -31,7 +32,7 @@ def addVertex():
 
         db.session.add(n1)
         db.session.commit()
-    
+
         return body
     else:
         return 'Content-Type not supported!'
@@ -69,7 +70,7 @@ def addEdge():
         db.session.add(edge2)
         db.session.commit()
 
-         
+
         return body
     else:
         return 'Content-Type not supported!'
@@ -97,12 +98,12 @@ def showGraph():
         nodes.append(node)
 
 
-    
+
     return jsonify(nodes)
 
 @funcs.route("/shortest-path/<f>/<n>", methods=['GET'])
 def short(f, n):
-    def findShortestPath(start, end, path=[], cost=0): 
+    def findShortestPath(start, end, path=[], cost=0):
 
         path = path + [start]
 
@@ -180,7 +181,7 @@ def allPathsLimited(f):
         return paths
 
 
-    def visitAllNeighboursLimited(start, limit): 
+    def visitAllNeighboursLimited(start, limit):
 
         paths = []
 
@@ -195,8 +196,65 @@ def allPathsLimited(f):
         return paths
 
     n1 = int(f)
-    
+
     p1 = Poste.query.filter_by(plaq=n1).first()
 
     x = visitAllNeighboursLimited(p1, 100)
     return jsonify(x)
+
+
+
+
+
+@funcs.route("/closest-poste/", methods=["POST"])
+def closest_poste():
+
+    print("cp ran")
+
+    content_type = request.headers.get('Content-Type')
+
+    if (content_type == 'application/json'):
+
+        body = request.json
+
+        lat = body['lat']
+        lng = body['lng']
+
+        reference = (float(lat), float(lng))
+
+        def get_distance(point1, point2):
+            R = 6370
+            lat1 = radians(point1[0])  #insert value
+            lon1 = radians(point1[1])
+            lat2 = radians(point2[0])
+            lon2 = radians(point2[1])
+
+            dlon = lon2 - lon1
+            dlat = lat2- lat1
+
+            a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1-a))
+            distance = R * c
+            return distance
+
+        closest = None # o poste mais perto
+        shortest = 0    # distancia do poste mais perto
+
+        for poste in Poste.query.all():
+
+            distance = get_distance(reference, (poste.cordx, poste.cordy))
+
+            if closest is None or distance < shortest:
+
+                closest = poste
+                shortest = distance
+
+
+
+
+        pair = [closest.plaq, (closest.cordx, closest.cordy), shortest]
+
+        print(pair)
+
+        return jsonify(pair)
+    return "invalid"

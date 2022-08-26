@@ -6,24 +6,7 @@ async function branch(plaq){
   const data = await response.json()
 
   return data;
-}   
-
-
-
-
-const randomColor = () => {
-   let color = '#';
-   for (let i = 0; i < 6; i++){
-      const random = Math.random();
-      const bit = (random * 16) | 0;
-      color += (bit).toString(16);
-   };
-
-   return color;
- };
-
-
-
+}
 
 async function postEdge(){
 
@@ -44,7 +27,7 @@ async function postEdge(){
   const method = "POST";
 
   const headers = {'Content-Type': 'application/json'};
-  
+
   const request = await fetch(url, {method:method, body:body, headers:headers})
 
   const data = await request.json();
@@ -53,13 +36,24 @@ async function postEdge(){
 
 }
 
-async function postPoste(lat, lng){
+async function postPoste(location, map){
 
   let plaq = Math.floor(Math.random() * 500);
 
+  let marker = new google.maps.Marker({
+
+    position: location,
+    label: plaq.toString(),
+    map: map,
+  });
+
+  let lat = marker.getPosition().lat();
+  let lng = marker.getPosition().lng();
+
+
   let coord = {x:parseFloat(lat), y:parseFloat(lng)}
 
-  
+
   const body = JSON.stringify({fplaq: plaq, fcoord: coord});
 
 
@@ -68,7 +62,7 @@ async function postPoste(lat, lng){
   const method = "POST";
 
   const headers = {'Content-Type': 'application/json'};
-  
+
   const request = await fetch(url, {method:method, body:body, headers:headers})
 
   const data = await request.json();
@@ -80,42 +74,58 @@ async function postPoste(lat, lng){
 
 }
 
-function addMarker(location, map) {
-  // Add the marker at the clicked location, and add the next-available label
-  // from the array of alphabetical characters.
+async function handleClick(location, map) {
 
-  console.log(location.lat)
+
+    console.log("hc ran");
+
+
 
   let marker = new google.maps.Marker({
+
     position: location,
     map: map,
   });
 
   let lat = marker.getPosition().lat();
-  let lng = marker.getPosition().lng();   
+  let lng = marker.getPosition().lng();
 
-  postPoste(lat, lng);
+  const body = JSON.stringify({lat: lat, lng: lng});
 
+  const url = 'http://localhost:5000/closest-poste/';
+
+  const method = "POST";
+
+  const headers = {'Content-Type': 'application/json'};
+
+  const request = await fetch(url, {method:method, body:body, headers:headers})
+
+  const data = await request.json();
+
+  let cord = new google.maps.LatLng(data[1][0], data[1][1]);
+
+  let marker_poste = new google.maps.Marker({
+
+    position: cord,
+    label: data[0].toString(),
+    map: map,
+  });
+
+  let c = new google.maps.Polyline({
+    path: [location, cord],
+    strokeColor: '#008000',
+    strokeOpacity: 1.0,
+    strokeWeight: 3,
+    map, map
+  })
+
+  draw_line(data[0], map)
 }
 
+async function draw_line(start, map){
 
+  let all_paths_limited = await branch(start.toString());
 
-async function initMap() {
-
-
-  let map = new google.maps.Map(document.getElementById("map"), {
-    center: new google.maps.LatLng(0, 0),
-    zoom: 3,
-  });
-
-  google.maps.event.addListener(map, "click", (event) => {
-    addMarker(event.latLng, map);
-  });
-
-
-  
-  let all_paths_limited = await branch("53");
-  
 
   for(let i = 0; i<all_paths_limited.length;i++){
 
@@ -126,19 +136,32 @@ async function initMap() {
           path.push(cord)
       }
 
-      let color = randomColor();
 
         const line = new google.maps.Polyline({
         path: path,
-        strokeColor: color,
+        strokeColor: '#0000ff',
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map, map
         })
 
         console.log(path)
-
   }
+
+}
+
+async function initMap(start=null) {
+
+
+  let map = new google.maps.Map(document.getElementById("map"), {
+    center: new google.maps.LatLng(0, 0),
+    zoom: 3,
+  });
+
+  google.maps.event.addListener(map, "click", (event) => {
+    handleClick(event.latLng, map);
+  });
+
 }
 
 

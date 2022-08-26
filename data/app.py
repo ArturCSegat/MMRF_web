@@ -5,7 +5,8 @@ import os
 
 if __name__ == "__main__":
 
-    
+
     app = create_app()
-    CORS(app)
+    cors = CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(debug=True)
