@@ -150,7 +150,11 @@ async function draw_line(start, map){
 
 }
 
-async function initMap(start=null) {
+function cut(){initMap("cut");}
+function draw(){initMap("draw");}
+function see(){initMap("see");}
+
+async function initMap(mode=null) {
 
 
   let map = new google.maps.Map(document.getElementById("map"), {
@@ -159,7 +163,16 @@ async function initMap(start=null) {
   });
 
   google.maps.event.addListener(map, "click", (event) => {
-    handleClick(event.latLng, map);
+    if(mode === "see"){
+      handleClick(event.latLng, map);
+    }
+    if(mode === "draw"){
+      postPoste(event.latLng, map);
+    }
+    if(mode === "cut"){
+      handleClick(event.latLng, map);
+    }
+
   });
 
 }
