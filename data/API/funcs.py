@@ -6,6 +6,7 @@ from . import db
 from .models import Poste, Edge
 from math import sin, cos, sqrt, atan2, radians
 from flask_cors import cross_origin
+import numpy as np
 
 
 funcs = Blueprint("funcs", __name__)
@@ -158,49 +159,71 @@ def allPaths(f, n):
     x = findAllPaths(n1, n2)
     return jsonify(x)
 
-@funcs.route("/all-paths-limited/<f>/", methods=["GET"])
-def allPathsLimited(f):
+@funcs.route("/all-paths-limited/", methods=["POST"])
+def allPathsLimited():
 
-    def findAllRealPaths(start, end, limit, path=[], paths=[], cost=0, ):
-        path = path + [(start.cordx, start.cordy)]
+    content_type = request.headers.get('Content-Type')
 
-        if start.plaq == end.plaq:
-            pair = [path, cost]
-            paths.append(pair)
+    if (content_type == 'application/json'):
 
-        if cost > limit:
-            return None
+        body = request.json
 
-        for con in Edge.query.filter_by(node1=start.plaq):
+        plaq = body['plaq']
 
-            node = Poste.query.filter_by(plaq = con.node2).first()
+        a = (body['lat1'], body['lng1'])
+        b = (body['lat2'], body['lng2'])
 
-            if (node.cordx, node.cordy) not in path:
-                findAllRealPaths(start=node, end=end, limit=limit,path=path, paths=paths, cost=(cost + con.distance))
-
-        return paths
+        print(a)
+        print(b)
 
 
-    def visitAllNeighboursLimited(start, limit):
+        def inbetweeen(p, x, y):
+            if p >= x and p <= y:
+                return True
+            return False
 
-        paths = []
+        def findAllRealPaths(start, end, limit, path=[], paths=[], cost=0, ):
+            path = path + [(start.cordx, start.cordy)]
 
-        for node in Poste.query.all():
+            if start.plaq == end.plaq:
+                pair = [path, cost]
+                paths.append(pair)
 
-            paths_node = findAllRealPaths(start, node, limit)
+            if cost > limit:
+                return None
 
-            for path in paths_node:
-                if path not in paths:
-                    paths.append(path)
+            for con in Edge.query.filter_by(node1=start.plaq):
 
-        return paths
+                node = Poste.query.filter_by(plaq = con.node2).first()
 
-    n1 = int(f)
+                if inbetweeen(node.cordx, b[0], a[0]) and inbetweeen(node.cordy, a[1], b[1]):
 
-    p1 = Poste.query.filter_by(plaq=n1).first()
+                    if (node.cordx, node.cordy) not in path:
+                        findAllRealPaths(start=node, end=end, limit=limit,path=path, paths=paths, cost=(cost + con.distance))
 
-    x = visitAllNeighboursLimited(p1, 100)
-    return jsonify(x)
+            return paths
+
+
+        def visitAllNeighboursLimited(start, limit):
+
+            paths = []
+
+            for node in Poste.query.all():
+
+                paths_node = findAllRealPaths(start, node, limit)
+
+                for path in paths_node:
+                    if path not in paths:
+                        paths.append(path)
+
+            return paths
+
+        n1 = int(plaq)
+
+        p1 = Poste.query.filter_by(plaq=n1).first()
+
+        x = visitAllNeighboursLimited(p1, 100)
+        return jsonify(x)
 
 
 

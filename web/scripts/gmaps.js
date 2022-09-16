@@ -1,11 +1,23 @@
-async function branch(plaq){
+async function branch(plaq, square_cord){
 
-  const url = 'http://localhost:5000/all-paths-limited/' + plaq;
+  console.log(square_cord);
 
-  const response = await fetch(url)
-  const data = await response.json()
+  const body = JSON.stringify({plaq:plaq, lat1: square_cord[0].lat, lng1: square_cord[0].lng, lat2: square_cord[1].lat, lng2: square_cord[1].lng});
+
+
+
+  const url = 'http://localhost:5000/all-paths-limited/';
+
+  const method = "POST";
+
+  const headers = {'Content-Type': 'application/json'};
+
+  const request = await fetch(url, {method:method, body:body, headers:headers})
+
+  const data = await request.json();
 
   return data;
+
 }
 
 async function postEdge(){
@@ -74,11 +86,10 @@ async function postPoste(location, map){
 
 }
 
-async function handleClick(location, map) {
+async function handleClick(location, square_cord, map) {
 
 
     console.log("hc ran");
-
 
 
   let marker = new google.maps.Marker({
@@ -119,12 +130,13 @@ async function handleClick(location, map) {
     map, map
   })
 
-  draw_line(data[0], map)
+  draw_line(data[0],square_cord, map)
 }
 
-async function draw_line(start, map){
+async function draw_line(start, square_cord, map){
 
-  let all_paths_limited = await branch(start.toString());
+  let all_paths_limited = await branch(start.toString(), square_cord);
+
 
 
   for(let i = 0; i<all_paths_limited.length;i++){
@@ -150,11 +162,38 @@ async function draw_line(start, map){
 
 }
 
-function cut(){initMap("cut");}
+function draw_square(square_cord, map){
+
+  let a = square_cord[0];
+  let b = square_cord[1];
+  let inv_a = {lat: a.lat, lng: b.lng};
+  let inv_b = {lat: b.lat, lng: a.lng};
+
+  let path = [a, inv_a, b, inv_b, a];
+
+  const line = new google.maps.Polyline({
+    path: path,
+    strokeColor: '#0000ff',
+    strokeOpacity: 1.0,
+    strokeWeight: 3,
+    map, map
+  });
+
+
+}
+
+async function dissectData(square_cord){
+
+
+
+
+}
+
+function cut(){initMap("cut", []);}
 function draw(){initMap("draw");}
 function see(){initMap("see");}
 
-async function initMap(mode=null) {
+async function initMap(mode=null, square_cord=null) { // square_cord is an arra that stores the cordinates for a diagonal of the cut square_cord
 
 
   let map = new google.maps.Map(document.getElementById("map"), {
@@ -162,15 +201,34 @@ async function initMap(mode=null) {
     zoom: 3,
   });
 
+
+
   google.maps.event.addListener(map, "click", (event) => {
     if(mode === "see"){
-      handleClick(event.latLng, map);
+
+      handleClick(event.latLng, square_cord, map);
     }
     if(mode === "draw"){
       postPoste(event.latLng, map);
     }
     if(mode === "cut"){
-      handleClick(event.latLng, map);
+      let marker = new google.maps.Marker({
+
+        position: event.latLng,
+        map: map,
+      });
+
+      let lat = marker.getPosition().lat();
+      let lng = marker.getPosition().lng();
+
+      let cord = {lat:lat, lng:lng}
+
+      square_cord.push(cord);
+
+      if (square_cord.length >= 2){
+        draw_square(square_cord, map);
+        mode = "see"
+      }
     }
 
   });
