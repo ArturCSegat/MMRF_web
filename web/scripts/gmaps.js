@@ -13,6 +13,8 @@ async function branch(plaq, square_cord){
   const headers = {'Content-Type': 'application/json'};
 
   const request = await fetch(url, {method:method, body:body, headers:headers})
+  
+  console.log("request = ", body)
 
   const data = await request.json();
 

@@ -1,13 +1,10 @@
-import json
-from urllib import response
 from flask import Blueprint, request, redirect, render_template, after_this_request, jsonify, url_for, flash
 from sqlalchemy.orm import query
 from . import db
 from .models import Poste, Edge
 from math import sin, cos, sqrt, atan2, radians
 from flask_cors import cross_origin
-import numpy as np
-
+import time
 
 funcs = Blueprint("funcs", __name__)
 
@@ -162,6 +159,8 @@ def allPaths(f, n):
 @funcs.route("/all-paths-limited/", methods=["POST"])
 def allPathsLimited():
 
+    start = time.time()
+
     content_type = request.headers.get('Content-Type')
 
     if (content_type == 'application/json'):
@@ -203,7 +202,6 @@ def allPathsLimited():
 
             return paths
 
-
         def visitAllNeighboursLimited(start, limit):
 
             paths = []
@@ -223,10 +221,8 @@ def allPathsLimited():
         p1 = Poste.query.filter_by(plaq=n1).first()
 
         x = visitAllNeighboursLimited(p1, 100)
+        print(time.time() - start)
         return jsonify(x)
-
-
-
 
 
 @funcs.route("/closest-poste/", methods=["POST"])
@@ -247,20 +243,20 @@ def closest_poste():
 
         def get_distance(point1, point2):
             R = 6370
-            lat1 = radians(point1[0])  #insert value
+            lat1 = radians(point1[0])
             lon1 = radians(point1[1])
             lat2 = radians(point2[0])
             lon2 = radians(point2[1])
 
             dlon = lon2 - lon1
-            dlat = lat2- lat1
+            dlat = lat2 - lat1
 
             a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
             c = 2 * atan2(sqrt(a), sqrt(1-a))
             distance = R * c
             return distance
 
-        closest = None # o poste mais perto
+        closest = None  # o poste mais perto
         shortest = 0    # distancia do poste mais perto
 
         for poste in Poste.query.all():
@@ -272,12 +268,12 @@ def closest_poste():
                 closest = poste
                 shortest = distance
 
+        if closest is not None:
+            pair = [closest.plaq, (closest.cordx, closest.cordy), shortest]
 
+            print(pair)
 
-
-        pair = [closest.plaq, (closest.cordx, closest.cordy), shortest]
-
-        print(pair)
-
-        return jsonify(pair)
+            return jsonify(pair)
+        else:
+            print("invalid")
     return "invalid"
