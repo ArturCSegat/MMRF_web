@@ -29,8 +29,7 @@ async function postEdge(){
 
     const distance = document.getElementById('distance').value;
 
-    const body = JSON.stringify({fplaq: fplaq, nplaq: nplaq, distance:distance});
-
+    const body = JSON.stringify({node1: fplaq, node2: nplaq,});
 
     const url = 'http://localhost:5000/add-edge';
 
@@ -48,7 +47,6 @@ async function postEdge(){
 
 async function postPoste(location, plaq, map){
     let marker = new google.maps.Marker({
-
         position: location,
         label: plaq.toString(),
         map: map,
@@ -57,14 +55,9 @@ async function postPoste(location, plaq, map){
     let lat = marker.getPosition().lat();
     let lng = marker.getPosition().lng();
 
+    const body = JSON.stringify({id: plaq, lat:parseFloat(lat), lng:parseFloat(lng) });
 
-    let coord = {x:parseFloat(lat), y:parseFloat(lng)}
-
-
-    const body = JSON.stringify({fplaq: plaq, fcoord: coord});
-
-
-    const url = 'http://localhost:5000/add-vertex';
+    const url = 'http://localhost:5000/add-node';
 
     const method = "POST";
 
