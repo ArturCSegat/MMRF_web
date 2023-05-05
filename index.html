@@ -3,37 +3,17 @@
     <head>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <title>Test</title>
-        <script src="./scripts/gmaps.js"></script>
+        <script type="module" src="./scripts/gmaps.js"></script>
+        <script type="module" src="scripts/dom_elements.js"></script>
 
         <link rel="stylesheet" href="./styles/main.css">
     </head>
     <body>
 
-        <h2>Criar conexão</h2>
-
-        <p>fPlaq</p>
-        <input type="text" id="fPlaq">
-
-        <p>nPlaq</p>
-        <input type="text" id="nPlaq">
-
-        <p>distance</p>
-        <input type="text" id="distance">
-
-        <button type="submit" onclick={postEdge()}>Criar</button>
-
-
-        <br>
-        <br>
-        <br>
-
-        <div>
-          <button type="submit" onclick={cut()}>cut</button>
-          <button type="submit" onclick={draw()}>draw</button>
-        </div>
 
         <h1>Teste do Gmaps</h1>
-
+        <div id="mode"  onclick="handle_mode_click()">BRANCH</div>
+        <div class="limit-container"><div id="limit">100</div>meters</div>
         <div id="map"></div>
 
         <script
