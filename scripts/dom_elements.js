@@ -1,3 +1,4 @@
+import { create_and_download_text_file } from "./text_file_handler.js"
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
 
@@ -36,5 +37,16 @@ function handle_mode_click(){
 }
 
 
-window.handle_mode_click = handle_mode_click
-export { get_limit, get_mode, set_mode }
+function show_download_button(){
+    const dowload_button = document.getElementById("download");
+    dowload_button.style.visibility = "visible"
+}
+
+
+function hide_download_button(){
+    const dowload_button = document.getElementById("download");
+    dowload_button.style.visibility = "hidden"
+}
+
+window.handle_mode_click = handle_mode_click;
+export { get_limit, get_mode, set_mode, show_download_button, hide_download_button }

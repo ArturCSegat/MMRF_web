@@ -29,3 +29,16 @@ h3 {
     height: 50px;
     width: 100px;
 }
+
+.download {
+    height: 25px;
+    width: 150px;
+    text-align: center;
+    background-color: navy;
+    visibility: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 15%;
+}

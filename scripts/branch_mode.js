@@ -1,7 +1,7 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines } from "./draw.js"
-import { get_limit } from "./dom_elements.js"
-import { get_empty_prop } from "./cut_mode.js"
+import { get_limit, handle_download_click, show_download_button, hide_download_button} from "./dom_elements.js"
+import { create_and_download_text_file } from "./text_file_handler.js"
 
 
 async function closest_poste(position){
@@ -50,6 +50,18 @@ async function handle_click_branch(position, square_limits, map){
 
     let pathing = await get_branches_from(poste.id, get_limit(), square_limits);
     draw_branching_lines(pathing, map);
+    show_download_button();
+    
+    const handle_click = () => {
+        console.log("donwloading", JSON.stringify(pathing), "original", pathing)
+        create_and_download_text_file(JSON.stringify(pathing), "pathing");
+        hide_download_button();
+        document.getElementById("download").removeEventListener("click", handle_click);
+        return;
+    }
+
+    document.getElementById("download").addEventListener("click", handle_click);
+
 }
 
 
