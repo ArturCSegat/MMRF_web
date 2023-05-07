@@ -24,18 +24,14 @@ async function handle_click_create(position, postes, map) {
     const poste = {id: new_id, lat: parseFloat(click_marker.getPosition().lat()), lng: parseFloat(click_marker.getPosition().lng())}
     postes.push(poste)
 
-    
-
-    if (postes.length > 1){
-        new google.maps.Polyline({
-            path: [position, new google.maps.LatLng(last_poste['lat'],last_poste['lng'])],
-            strokeColor: '#0000ff',
-            strokeOpacity: 1.0,
-            strokeWeight: 3,
-            map: map
-        });
-        await post_edge({node1: last_poste, node2: poste})
-    }
+    new google.maps.Polyline({
+        path: [position, new google.maps.LatLng(last_poste['lat'],last_poste['lng'])],
+        strokeColor: '#0000ff',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+        map: map
+    });
+    await post_edge({node1: last_poste, node2: poste})
 }
 
 

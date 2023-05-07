@@ -1,6 +1,4 @@
-import { create_and_download_text_file } from "./text_file_handler.js"
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
-
 
 function get_limit(){
     const limit_obj = document.getElementById("limit")

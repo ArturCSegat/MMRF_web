@@ -1,6 +1,6 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines } from "./draw.js"
-import { get_limit, handle_download_click, show_download_button, hide_download_button} from "./dom_elements.js"
+import { get_limit, show_download_button, hide_download_button } from "./dom_elements.js"
 import { create_and_download_text_file } from "./text_file_handler.js"
 
 
@@ -36,7 +36,7 @@ async function handle_click_branch(position, square_limits, map){
 
     new google.maps.Polyline({              // connect branching and user's click
         path: [position, poste_cord],
-        strokeColor: '#0000ff',
+        strokeColor: '#ffff00',
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map: map

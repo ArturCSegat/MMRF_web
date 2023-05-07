@@ -20,10 +20,12 @@ function handle_click_cut(position, square_limits, square_prop, map){
 
     square_limits[square_prop] = position
     
-    if (get_empty_prop(square_limits) === null){
-        draw_square(square_limits, map);
-        set_mode("BRANCH")
+    if (get_empty_prop(square_limits) != null){
+        return;
     }
+    draw_square(square_limits, map);
+    set_mode("BRANCH")
+
 }
 
 export { handle_click_cut, get_empty_prop }
