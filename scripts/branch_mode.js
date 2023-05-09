@@ -43,16 +43,19 @@ async function handle_click_branch(position, square_limits, map){
 
     })
 
+    let limiter = {top: null, bot: null}
     if (square_limits.top === null && square_limits.bot === null){
-        square_limits.top = {lat: 90.0, lng: -180.0}
-        square_limits.bot = {lat: -90.0, lng: 180.0}
+        limiter.top = {lat: 90.0, lng: -180.0}
+        limiter.bot = {lat: -90.0, lng: 180.0}
+    } else {
+        limiter = square_limits
     }
 
-    let pathing = await get_branches_from(poste.id, get_limit(), square_limits);
+    let pathing = await get_branches_from(poste.id, get_limit(), limiter);
     draw_branching_lines(pathing, map);
     show_download_button();
     
-    const handle_click = () => {
+    const handle_click = () => { // acutualy handles the download button not the map itself
         console.log("donwloading", JSON.stringify(pathing), "original", pathing)
         create_and_download_text_file(JSON.stringify(pathing), "pathing");
         hide_download_button();

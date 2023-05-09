@@ -8,8 +8,8 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     let square_limits = {top: null, bot: null}
 
     let map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(0, 0),
-        zoom: 3,
+        center: new google.maps.LatLng(-29.91113120515485, -50.70384997933515),
+        zoom: 10,
     });
 
     google.maps.event.addListener(map, "click", (event) => {
