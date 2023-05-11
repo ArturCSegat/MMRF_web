@@ -1,8 +1,6 @@
 import {request_builder} from "./request_builder.js"
 
 async function handle_click_create(position, postes, map) {
-    console.log("len is ", postes.length);
-    console.log("nodes is", postes);
     if (postes === undefined || postes.length === 0){
         const click_marker_bad = new google.maps.Marker({
             position: position,
@@ -13,7 +11,7 @@ async function handle_click_create(position, postes, map) {
         postes.push(poste)
         return
     }
-    console.log(postes)
+
     const last_poste = postes[postes.length - 1]
     const new_id = parseInt(last_poste.id) + 1
     const click_marker = new google.maps.Marker({
@@ -38,7 +36,6 @@ async function handle_click_create(position, postes, map) {
 async function post_edge(edge){
     const url = 'http://localhost:1337/add-edge';
     const data = await request_builder(url, "POST", edge)
-    console.log(data);
 }
 
 

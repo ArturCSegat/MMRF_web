@@ -12,7 +12,6 @@ function get_empty_prop(square){
 
 
 function handle_click_cut(position, square_limits, square_prop, map){
-    console.log("cutting");
     new google.maps.Marker({    // marks the click
         position: position,
         map: map

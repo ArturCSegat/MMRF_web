@@ -9,12 +9,10 @@ import { handle_click_branch } from "./branch_mode.js"
 
 async function click_state_machine(position, postes, square_limits, map){
     const initial_mode = get_mode();
-    console.log("state");
     if (initial_mode === "BRANCH"){
         await handle_click_branch(position, square_limits, map)
     }
     if (initial_mode === "CUT"){
-        console.log("sq limits", square_limits);
         handle_click_cut(position, square_limits, get_empty_prop(square_limits), map) 
     }
     if (initial_mode === "CREATE"){

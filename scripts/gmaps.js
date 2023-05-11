@@ -13,7 +13,6 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     });
 
     google.maps.event.addListener(map, "click", (event) => {
-        console.log("hey");
         click_state_machine(event.latLng.toJSON(), postes, square_limits, map); 
     });
 

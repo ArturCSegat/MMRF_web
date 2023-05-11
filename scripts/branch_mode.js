@@ -1,34 +1,14 @@
 import { request_builder } from "./request_builder.js"
-import { draw_branching_lines } from "./draw.js"
+import { draw_branching_lines, get_color } from "./draw.js"
 import { get_limit, show_download_button, hide_download_button } from "./dom_elements.js"
 import { create_and_download_text_file } from "./text_file_handler.js"
 
 
-async function closest_poste(position){
+async function closest_poste(position, map){
     let url = "http://localhost:1337/closest-node/"
-    let closest = await request_builder(url, "POST", {lat: position.lat, lng: position.lng,}) 
-    return closest
-}
+    let poste_pair = await request_builder(url, "POST", {lat: position.lat, lng: position.lng,}) 
 
-
-async function get_branches_from(poste, limit, square_limits){
-    const url = "http://localhost:1337/spread-radius/"
-    const paths = await request_builder(url, "POST", {node: {id: poste}, limit: limit, square: square_limits})
-    return paths;
-}
-
-
-async function handle_click_branch(position, square_limits, map){    
-    console.log("lol hc ran");                  // nostalgic value
-
-    new google.maps.Marker({                // creates marker at postions of user's click
-        position: position,
-        map: map,
-    });
-
-    let poste = await closest_poste(position);
-    console.log("poste", poste.id, poste);
-    let poste_cord = new google.maps.LatLng(poste.lat, poste.lng); 
+    let poste_cord = new google.maps.LatLng(poste_pair.node.lat, poste_pair.node.lng); 
     new google.maps.Marker({                // creates marker at postions of closest poste
         position: poste_cord,
         map: map,
@@ -36,12 +16,30 @@ async function handle_click_branch(position, square_limits, map){
 
     new google.maps.Polyline({              // connect branching and user's click
         path: [position, poste_cord],
-        strokeColor: '#ffff00',
+        strokeColor: get_color(poste_pair.dist, get_limit()),
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map: map
 
     })
+    return poste_pair
+}
+
+
+async function get_branches_from(poste, cost, limit, square_limits){
+    const url = "http://localhost:1337/spread-radius/"
+    const paths = await request_builder(url, "POST", {node: {id: poste}, cost: cost, limit: limit, square: square_limits})
+    return paths;
+}
+
+
+async function handle_click_branch(position, square_limits, map){    
+    new google.maps.Marker({                // creates marker at postions of user's click
+        position: position,
+        map: map,
+    });
+
+    let poste = await closest_poste(position, map);
 
     let limiter = {top: null, bot: null}
     if (square_limits.top === null && square_limits.bot === null){
@@ -51,15 +49,13 @@ async function handle_click_branch(position, square_limits, map){
         limiter = square_limits
     }
 
-    let pathing = await get_branches_from(poste.id, get_limit(), limiter);
+    let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit(), limiter);
     draw_branching_lines(pathing, map);
     show_download_button();
     
     const handle_click = () => { // acutualy handles the download button not the map itself
-        console.log("donwloading", JSON.stringify(pathing), "original", pathing)
         create_and_download_text_file(JSON.stringify(pathing), "pathing");
         hide_download_button();
-        document.getElementById("download").removeEventListener("click", handle_click);
         return;
     }
 
