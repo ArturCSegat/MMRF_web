@@ -1,7 +1,7 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines, get_color } from "./draw.js"
 import { get_limit, show_download_button, hide_download_button } from "./dom_elements.js"
-import { create_and_download_text_file } from "./text_file_handler.js"
+import { PathTxtFileWriter } from "./PathTxtFileWriter.js"
 
 
 async function closest_poste(position, map){
@@ -54,7 +54,10 @@ async function handle_click_branch(position, square_limits, map){
     show_download_button();
     
     const handle_click = () => { // acutualy handles the download button not the map itself
-        create_and_download_text_file(JSON.stringify(pathing), "pathing");
+        // create_and_download_text_file(JSON.stringify(pathing), "pathing");
+        let file_writer = new PathTxtFileWriter(`paths_from_${poste.node.id}`);
+        file_writer.handleWritesFromPathingSet(pathing);
+        file_writer.downloadFile();
         hide_download_button();
         return;
     }

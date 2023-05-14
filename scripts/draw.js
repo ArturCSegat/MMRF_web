@@ -22,15 +22,21 @@ function draw_square(square_cord, map){     // draws a square on a given google 
 
 function get_color(offset, max_range){
     // defines the colour range of the paths
-    let colors = ["#004d00", "#008000", "#00cc00", "#808000", "#cccc00", "#e60000", "#990000", "#660000"];
+    const colors = ["#004d00", "#008000", "#00cc00", "#808000", "#cccc00", "#e60000", "#990000", "#660000"];
     //          dark            lighter   light     yellow      lighter     light     darker    very dark
     //          green           green     green     yellow      yellow      red        red        red
     
-    let indexer = 0;
-    for (let i = 1; i <= offset && indexer < colors.length - 1; i++){
-        i += max_range / 10;  // calculates how many 10%'s of the max the current offset is     
-        indexer++;
+    const percentage_of_max = (offset / max_range) * 100;
+
+    // math determines the index by integer dividing the percentage by ten
+    // EX: 45.59%  = 4,59 floored = 4;
+    // EX: 9% = 0,9 floored = 0;
+    let indexer = Math.floor(percentage_of_max / 10);
+
+    if (indexer > colors.length - 1){
+        indexer = colors.length - 1;
     }
+
     return colors[indexer];
 }
 
