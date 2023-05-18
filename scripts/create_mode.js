@@ -34,8 +34,8 @@ async function handle_click_create(position, postes, map) {
 
 
 async function post_edge(edge){
-    const url = 'http://localhost:1337/add-edge';
-    const data = await request_builder(url, "POST", edge)
+    const end_point = "/add-edge";
+    const data = await request_builder(end_point, "POST", edge)
 }
 
 
