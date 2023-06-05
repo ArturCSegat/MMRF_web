@@ -8,7 +8,7 @@ async function closest_poste(position, map){
     let end_point = "/closest-node/"
     let poste_pair = await request_builder(end_point, "POST", {lat: position.lat, lng: position.lng,}) 
 
-    let poste_cord = new google.maps.LatLng(poste_pair.node.lat, poste_pair.node.lng); 
+    let poste_cord = new google.maps.LatLng(poste_pair["closest-pair"].node.lat, poste_pair["closest-pair"].node.lng); 
     new google.maps.Marker({                // creates marker at postions of closest poste
         position: poste_cord,
         map: map,
@@ -22,14 +22,14 @@ async function closest_poste(position, map){
         map: map
 
     })
-    return poste_pair
+    return poste_pair["closest-pair"]
 }
 
 
 async function get_branches_from(poste, cost, limit, square_limits){
     const end_point = "/spread-radius/"
-    const paths = await request_builder(end_point, "POST", {node: {id: poste}, cost: cost, limit: limit, square: square_limits})
-    return paths;
+    const paths = await request_builder(end_point, "POST", {node: {id: poste}, cost: cost, limit: limit, square: square_limits});
+    return paths.paths;
 }
 
 
