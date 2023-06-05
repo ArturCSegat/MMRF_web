@@ -1,4 +1,5 @@
 import { get_mode, set_mode } from "./dom_elements.js"
+import { handle_click_create } from "./create_mode.js"
 import { handle_click_cut, get_empty_prop } from "./cut_mode.js"
 import { handle_click_branch } from "./branch_mode.js"
 
@@ -13,6 +14,9 @@ async function click_state_machine(position, postes, square_limits, map){
     }
     if (initial_mode === "CUT"){
         handle_click_cut(position, square_limits, get_empty_prop(square_limits), map) 
+    }
+    if (initial_mode === "CREATE"){
+        await handle_click_create(position, postes, map)
     }
 }
 
