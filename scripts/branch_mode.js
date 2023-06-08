@@ -1,7 +1,6 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines, get_color } from "./draw.js"
 import { get_limit, show_download_button, hide_download_button } from "./dom_elements.js"
-import { PathTxtFileWriter } from "./PathTxtFileWriter.js"
 
 
 async function closest_poste(position, map){
@@ -33,6 +32,17 @@ async function get_branches_from(poste, cost, limit, square_limits){
 }
 
 
+async function downloadFile(id){
+        const a = document.createElement('a');
+        const response = await fetch("http://localhost:1337/txt-sub-graph/"+id.toString(), {method:"GET", credentials:'include'})
+        const file = await response.blob()
+        a.href= URL.createObjectURL(file);
+        a.download = "paths_from_" + id.toString();
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
+
+
 async function handle_click_branch(position, square_limits, map){    
     new google.maps.Marker({                // creates marker at postions of user's click
         position: position,
@@ -53,11 +63,10 @@ async function handle_click_branch(position, square_limits, map){
     draw_branching_lines(pathing, map);
     show_download_button();
     
-    const handle_click = () => { // acutualy handles the download button not the map itself
+    const handle_click = async () => { 
+        // acutualy handles the download button not the map itself
         // create_and_download_text_file(JSON.stringify(pathing), "pathing");
-        let file_writer = new PathTxtFileWriter(`paths_from_${poste.node.id}`);
-        file_writer.handleWritesFromPathingSet(pathing);
-        file_writer.downloadFile();
+        await downloadFile(poste.node.id);
         hide_download_button();
         return;
     }
