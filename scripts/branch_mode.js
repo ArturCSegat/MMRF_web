@@ -1,6 +1,6 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines, get_color } from "./draw.js"
-import { get_limit, show_download_button, hide_download_button } from "./dom_elements.js"
+import { get_limit, show_download_button, hide_download_button, get_selected } from "./dom_elements.js"
 
 
 async function closest_poste(position, map){
@@ -33,11 +33,14 @@ async function get_branches_from(poste, cost, limit, square_limits){
 
 
 async function downloadFile(id, paths){
+        const selected = get_selected()
+        const data = {Paths: paths, Cables:selected.cables, Boxes:selected.boxes, Uspliters:selected.uspliters, Bspliters:selected.bspliters}
+        console.log(JSON.stringify(data))
         const a = document.createElement('a');
         const response = await fetch("http://localhost:1337/txt-sub-graph/", {
             method:"POST",
             credentials:'include',
-            body:JSON.stringify(paths)
+            body:JSON.stringify(data)
         })
 
         const file = await response.blob()

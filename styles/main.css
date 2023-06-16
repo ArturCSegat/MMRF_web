@@ -11,9 +11,9 @@ h3 {
 
 /* Set the size of the div element that contains the map */
 #map {
-    height: 50em;
+    height: 25em;
     /* The height is 400 pixels */
-    width: 100em;
+    width: 50em;
     /* The width is the width of the web page */
     border-radius: 2em;
     margin-top: 1.5em;
@@ -41,4 +41,10 @@ h3 {
     padding: 5px;
     border: 1px solid black;
     border-radius: 15%;
+}
+
+
+select {
+    width: 30em;
+    height: auto;
 }

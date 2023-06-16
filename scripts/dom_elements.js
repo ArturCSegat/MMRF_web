@@ -57,6 +57,77 @@ function hide_download_button(){
     dowload_button.style.visibility = "hidden"
 }
 
+
+async function fill_selects(){
+    let select = document.getElementById("cables")
+    const cables_response = await fetch("http://localhost:1337/get-all-cables/")
+    const json_cables = await cables_response.json()
+    const cables = json_cables.cables
+    
+    for(let i = 0; i<cables.length; i++){
+        let opt = document.createElement('option');
+        opt.value = cables[i].id;
+        opt.innerHTML = JSON.stringify(cables[i]);
+        select.appendChild(opt);
+    }
+
+
+    select = document.getElementById("spliceboxes")
+    const boxes_response = await fetch("http://localhost:1337/get-all-spliceboxes/")
+    const json_boxes = await boxes_response.json()
+    const boxes = json_boxes.boxes
+    
+    for(let i = 0; i<boxes.length; i++){
+        let opt = document.createElement('option');
+        opt.value = boxes[i].id;
+        opt.innerHTML = JSON.stringify(boxes[i]);
+        select.appendChild(opt);
+    }
+
+    select = document.getElementById("uspliters")
+    const uspliters_response = await fetch("http://localhost:1337/get-all-uspliters/")
+    const json_uspliters = await uspliters_response.json()
+    const uspliters = json_uspliters.uspliters
+    
+    for(let i = 0; i<uspliters.length; i++){
+        let opt = document.createElement('option');
+        opt.value = uspliters[i].id;
+        opt.innerHTML = JSON.stringify(uspliters[i]);
+        select.appendChild(opt);
+    }
+
+    select = document.getElementById("bspliters")
+    const bspliters_response = await fetch("http://localhost:1337/get-all-bspliters/")
+    const json_bspliters = await bspliters_response.json()
+    const bspliters = json_bspliters.bspliters
+    
+    for(let i = 0; i<bspliters.length; i++){
+        let opt = document.createElement('option');
+        opt.value = bspliters[i].id;
+        opt.innerHTML = JSON.stringify(bspliters[i]);
+        select.appendChild(opt);
+    }
+}
+
+
+function get_selected(){
+    const selectCable = document.getElementById('cables');
+    const selectedCables = Array.from(selectCable.selectedOptions).map(option => parseInt(option.value));
+
+    const selectBox = document.getElementById('spliceboxes');
+    const selectedBoxes = Array.from(selectBox.selectedOptions).map(option => parseInt(option.value));
+
+    const selectUspliter = document.getElementById('uspliters');
+    const selectedUspliters = Array.from(selectUspliter.selectedOptions).map(option => parseInt(option.value));
+
+    const selectBspliter = document.getElementById('uspliters');
+    const selectedBspliters = Array.from(selectBspliter.selectedOptions).map(option => parseInt(option.value));
+
+    return {cables:selectedCables, boxes: selectedBoxes, uspliters: selectedUspliters, bspliters: selectedBspliters}
+}
+
+
+window.onload = fill_selects
 window.handle_mode_click = handle_mode_click;
 window.read_files = read_files;
-export { get_limit, get_mode, set_mode, show_download_button, hide_download_button }
+export { get_limit, get_mode, set_mode, show_download_button, hide_download_button, get_selected }
