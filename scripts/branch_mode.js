@@ -32,9 +32,14 @@ async function get_branches_from(poste, cost, limit, square_limits){
 }
 
 
-async function downloadFile(id){
+async function downloadFile(id, paths){
         const a = document.createElement('a');
-        const response = await fetch("http://localhost:1337/txt-sub-graph/"+id.toString(), {method:"GET", credentials:'include'})
+        const response = await fetch("http://localhost:1337/txt-sub-graph/", {
+            method:"POST",
+            credentials:'include',
+            body:JSON.stringify(paths)
+        })
+
         const file = await response.blob()
         a.href= URL.createObjectURL(file);
         a.download = "paths_from_" + id.toString();
@@ -66,7 +71,7 @@ async function handle_click_branch(position, square_limits, map){
     const handle_click = async () => { 
         // acutualy handles the download button not the map itself
         // create_and_download_text_file(JSON.stringify(pathing), "pathing");
-        await downloadFile(poste.node.id);
+        await downloadFile(poste.node.id, pathing);
         hide_download_button();
         return;
     }
