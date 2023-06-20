@@ -2,12 +2,17 @@ import { request_builder } from "./request_builder.js"
 import { draw_branching_lines, get_color } from "./draw.js"
 import { get_limit, show_download_button, hide_download_button, get_selected } from "./dom_elements.js"
 
+let all_clients = []
+let all_paths = []
+
 
 async function closest_poste(position, map){
     let end_point = "/closest-node/"
     let poste_pair = await request_builder(end_point, "POST", {lat: position.lat, lng: position.lng,}) 
 
-    let poste_cord = new google.maps.LatLng(poste_pair["closest-pair"].node.lat, poste_pair["closest-pair"].node.lng); 
+    let poste_cord = new google.maps.LatLng(poste_pair["closest-pair"].node.lat,
+        poste_pair["closest-pair"].node.lng); 
+
     new google.maps.Marker({                // creates marker at postions of closest poste
         position: poste_cord,
         map: map,
@@ -27,14 +32,21 @@ async function closest_poste(position, map){
 
 async function get_branches_from(poste, cost, limit, square_limits){
     const end_point = "/spread-radius/"
-    const paths = await request_builder(end_point, "POST", {node: {id: poste}, cost: cost, limit: limit, square: square_limits});
+    const paths = await request_builder(end_point, "POST", {node: {id: poste},
+        cost: cost,
+        limit: limit, square: square_limits});
     return paths.paths;
 }
 
 
-async function downloadFile(id, paths){
+async function downloadFile(){
         const selected = get_selected()
-        const data = {Paths: paths, Cables:selected.cables, Boxes:selected.boxes, Uspliters:selected.uspliters, Bspliters:selected.bspliters}
+        const data = {
+            Paths: all_paths,
+            Clients: all_clients,
+            Cables:selected.cables,
+            Boxes:selected.boxes,
+            Uspliters:selected.uspliters, Bspliters:selected.bspliters}
         console.log(JSON.stringify(data))
         const a = document.createElement('a');
         const response = await fetch("http://localhost:1337/txt-sub-graph/", {
@@ -45,9 +57,12 @@ async function downloadFile(id, paths){
 
         const file = await response.blob()
         a.href= URL.createObjectURL(file);
-        a.download = "paths_from_" + id.toString();
+        a.download = "instance";
         a.click();
         URL.revokeObjectURL(a.href);
+        // clears module vairables for generation of next instance
+        all_clients = []
+        all_paths = []
     }
 
 
@@ -70,18 +85,18 @@ async function handle_click_branch(position, square_limits, map){
     let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit(), limiter);
     draw_branching_lines(pathing, map);
     show_download_button();
-    
-    const handle_click = async () => { 
-        // acutualy handles the download button not the map itself
-        // create_and_download_text_file(JSON.stringify(pathing), "pathing");
-        await downloadFile(poste.node.id, pathing);
-        hide_download_button();
-        return;
-    }
-
-    document.getElementById("download").addEventListener("click", handle_click);
-
+    all_clients.push({lat: position.lat, lng: position.lng})
+    all_paths.push(pathing)
+    console.log("cs")
+    console.log(all_clients)
+    console.log("ps")
+    console.log(all_paths)
+}
+const handle_click_download = async () => { 
+    // acutualy handles the download button not the map itself
+    await downloadFile();
+    hide_download_button();
+    return;
 }
 
-
-export { handle_click_branch }
+export { handle_click_branch, handle_click_download }
