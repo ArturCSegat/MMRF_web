@@ -4,6 +4,7 @@ import { get_limit, show_download_button, hide_download_button, get_selected } f
 
 let all_clients = []
 let all_paths = []
+let all_entry_nodes_ids = [] 
 
 
 async function closest_poste(position, map){
@@ -44,6 +45,7 @@ async function downloadFile(){
         const data = {
             Paths: all_paths,
             Clients: all_clients,
+            Entrys: all_entry_nodes_ids, 
             Cables:selected.cables,
             Boxes:selected.boxes,
             Uspliters:selected.uspliters, Bspliters:selected.bspliters}
@@ -85,12 +87,9 @@ async function handle_click_branch(position, square_limits, map){
     let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit(), limiter);
     draw_branching_lines(pathing, map);
     show_download_button();
+    all_entry_nodes_ids.push(poste.node.id)
     all_clients.push({lat: position.lat, lng: position.lng})
     all_paths.push(pathing)
-    console.log("cs")
-    console.log(all_clients)
-    console.log("ps")
-    console.log(all_paths)
 }
 const handle_click_download = async () => { 
     // acutualy handles the download button not the map itself
