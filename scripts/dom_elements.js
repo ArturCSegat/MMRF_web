@@ -14,6 +14,15 @@ async function read_files(limiter){
 }
 
 
+function handle_limit_click(){
+    let new_limit = prompt("new limit")
+    if (new_limit === null || new_limit === ""){
+        return
+    }
+    document.getElementById("limit").innerText = new_limit
+}
+
+
 function get_limit(){
     const limit_obj = document.getElementById("limit")
     return parseFloat(limit_obj.innerHTML)
@@ -117,4 +126,5 @@ function get_selected(){
 
 window.onload = fill_selects
 window.read_files = read_files;
+window.handle_limit_click = handle_limit_click
 export { get_limit, get_mode, set_mode, show_download_button, hide_download_button, get_selected, read_files }
