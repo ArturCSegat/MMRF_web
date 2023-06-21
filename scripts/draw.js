@@ -36,7 +36,7 @@ function get_color(offset, max_range){
     if (indexer > colors.length - 1){
         indexer = colors.length - 1;
     }
-
+    console.log(colors[indexer])
     return colors[indexer];
 }
 

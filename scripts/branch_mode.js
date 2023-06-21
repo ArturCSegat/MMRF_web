@@ -16,12 +16,13 @@ async function closest_poste(position, map){
 
     new google.maps.Marker({                // creates marker at postions of closest poste
         position: poste_cord,
+        label: "poste",
         map: map,
     });
 
     new google.maps.Polyline({              // connect branching and user's click
         path: [position, poste_cord],
-        strokeColor: get_color(poste_pair.dist, get_limit()),
+        strokeColor: get_color(poste_pair["closest-pair"].dist, get_limit()),
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map: map
@@ -31,11 +32,12 @@ async function closest_poste(position, map){
 }
 
 
-async function get_branches_from(poste, cost, limit, square_limits){
+async function get_branches_from(poste, cost, limit){
     const end_point = "/limited-branching/"
     const paths = await request_builder(end_point, "POST", {node: {id: poste},
         cost: cost,
-        limit: limit, square: square_limits});
+        limit: limit
+    });
     return paths.paths;
 }
 
@@ -71,20 +73,13 @@ async function downloadFile(){
 async function handle_click_branch(position, square_limits, map){    
     new google.maps.Marker({                // creates marker at postions of user's click
         position: position,
+        label: "client",
         map: map,
     });
 
     let poste = await closest_poste(position, map);
 
-    let limiter = {top: null, bot: null}
-    if (square_limits.top === null && square_limits.bot === null){
-        limiter.top = {lat: 90.0, lng: -180.0}
-        limiter.bot = {lat: -90.0, lng: 180.0}
-    } else {
-        limiter = square_limits
-    }
-
-    let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit(), limiter);
+    let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit());
     draw_branching_lines(pathing, map);
     show_download_button();
     all_entry_nodes_ids.push(poste.node.id)
