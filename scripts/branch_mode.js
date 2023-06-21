@@ -32,7 +32,7 @@ async function closest_poste(position, map){
 
 
 async function get_branches_from(poste, cost, limit, square_limits){
-    const end_point = "/spread-radius/"
+    const end_point = "/limited-branching/"
     const paths = await request_builder(end_point, "POST", {node: {id: poste},
         cost: cost,
         limit: limit, square: square_limits});

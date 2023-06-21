@@ -12,12 +12,14 @@
 
 
         <h1>Teste do Gmaps</h1>
-        <div id="mode"  onclick="handle_mode_click()">BRANCH</div>
+        <div id="mode">CUT</div>
         <div class="limit-container" onclick="show_download_button()"><div id="limit">100</div>meters</div>
         <button class="download" id="download">Download</button>
         <div id="map"></div>
-        <h4>insert your csv file</h4>
-        <input type="file" id="file_entry" onchange="read_files()">
+        <div id="file_container">
+            <h4>insert your csv file</h4>
+            <input type="file" id="file_entry" onchange="read_files()">
+        </div>
         <select id="bspliters" multiple></select>
         <select id="uspliters" multiple></select>
         <select id="cables" multiple></select>

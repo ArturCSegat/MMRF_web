@@ -1,4 +1,4 @@
-import { get_mode, set_mode } from "./dom_elements.js"
+import { get_mode } from "./dom_elements.js"
 import { handle_click_cut, get_empty_prop } from "./cut_mode.js"
 import { handle_click_branch } from "./branch_mode.js"
 

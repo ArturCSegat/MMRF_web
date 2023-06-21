@@ -48,3 +48,8 @@ select {
     width: 30em;
     height: auto;
 }
+
+#file_container {
+    visibility: hidden;
+}
+

@@ -3,7 +3,7 @@ import { set_mode } from "./dom_elements.js";
 import { handle_click_download } from "./branch_mode.js"; 
 
 async function initMap() { // square_cord is an arra that stores the cordinates for a diagonal of the cut square_cord
-    set_mode("BRANCH");
+    set_mode("CUT");
     let postes = []
     let square_limits = {top: null, bot: null}
 
