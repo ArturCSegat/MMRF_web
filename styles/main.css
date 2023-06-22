@@ -11,9 +11,9 @@ h3 {
 
 /* Set the size of the div element that contains the map */
 #map {
-    height: 25em;
+    height: 50%;
     /* The height is 400 pixels */
-    width: 50em;
+    width: 50%;
     /* The width is the width of the web page */
     border-radius: 2em;
     margin-top: 1.5em;
@@ -23,6 +23,13 @@ h3 {
 .limit-container {
     display: flex;
     flex-direction: row;
+}
+
+.info {
+    display: grid;
+    grid-template: auto auto / auto auto;
+    height: 15%;
+    width: 40%;
 }
 
 #mode {
@@ -43,13 +50,30 @@ h3 {
     border-radius: 15%;
 }
 
-
-select {
-    width: 30em;
-    height: auto;
+#file_container {
+    margin: 0;
+    visibility: hidden;
+    /* display: flex; */
+    /* flex-direction: row; */
 }
 
-#file_container {
-    visibility: hidden;
+#file_container > input {
+    margin-top: 10px;
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 25%;
+}
+
+.select-container-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.select-container > select {
+    height: 75%;
 }
 

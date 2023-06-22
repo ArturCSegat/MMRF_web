@@ -4,7 +4,6 @@ import { handle_click_download } from "./branch_mode.js";
 
 async function initMap() { // square_cord is an arra that stores the cordinates for a diagonal of the cut square_cord
     set_mode("CUT");
-    let postes = []
     let square_limits = {top: null, bot: null}
 
     let map = new google.maps.Map(document.getElementById("map"), {
@@ -13,7 +12,7 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     });
 
     google.maps.event.addListener(map, "click", (event) => {
-        click_state_machine(event.latLng.toJSON(), postes, square_limits, map); 
+        click_state_machine(event.latLng.toJSON(), square_limits, map); 
     });
 
     document.getElementById("download").addEventListener("click", handle_click_download);

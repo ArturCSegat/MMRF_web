@@ -9,10 +9,21 @@ let all_entry_nodes_ids = []
 
 async function closest_poste(position, map){
     let end_point = "/closest-node/"
-    let poste_pair = await request_builder(end_point, "POST", {lat: position.lat, lng: position.lng,}) 
+    let poste_response = await request_builder(end_point, "POST", {lat: position.lat, lng: position.lng,}) 
+    const poste_pair = poste_response["closest-pair"]
 
-    let poste_cord = new google.maps.LatLng(poste_pair["closest-pair"].node.lat,
-        poste_pair["closest-pair"].node.lng); 
+    if (poste_pair.dist > get_limit()){
+        alert("cliente invalido, viola o limite de distancia ao alcançar a rede")
+        throw new Error("invalid client")
+    }
+
+    new google.maps.Marker({                // creates marker at postions of user's click
+        position: position,
+        label: "client",
+        map: map,
+    });
+
+    let poste_cord = new google.maps.LatLng(poste_pair.node.lat, poste_pair.node.lng); 
 
     new google.maps.Marker({                // creates marker at postions of closest poste
         position: poste_cord,
@@ -22,14 +33,15 @@ async function closest_poste(position, map){
 
     new google.maps.Polyline({              // connect branching and user's click
         path: [position, poste_cord],
-        strokeColor: get_color(poste_pair["closest-pair"].dist, get_limit()),
+        strokeColor: get_color(poste_pair.dist, get_limit()),
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map: map
 
     })
-    return poste_pair["closest-pair"]
+    return poste_pair
 }
+
 
 
 async function get_branches_from(poste, cost, limit){
@@ -70,21 +82,20 @@ async function downloadFile(){
     }
 
 
-async function handle_click_branch(position, square_limits, map){    
-    new google.maps.Marker({                // creates marker at postions of user's click
-        position: position,
-        label: "client",
-        map: map,
-    });
+async function handle_click_branch(position, map){    
+    try{
+        let poste = await closest_poste(position, map);
 
-    let poste = await closest_poste(position, map);
-
-    let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit());
-    draw_branching_lines(pathing, map);
-    show_download_button();
-    all_entry_nodes_ids.push(poste.node.id)
-    all_clients.push({lat: position.lat, lng: position.lng})
-    all_paths.push(pathing)
+        let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit());
+        draw_branching_lines(pathing, map);
+        show_download_button();
+        all_entry_nodes_ids.push(poste.node.id)
+        all_clients.push({lat: position.lat, lng: position.lng})
+        all_paths.push(pathing)
+    }
+    catch {
+        return
+    }
 }
 const handle_click_download = async () => { 
     // acutualy handles the download button not the map itself
