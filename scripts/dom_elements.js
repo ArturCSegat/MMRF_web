@@ -1,16 +1,27 @@
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
-// this functin will also handle setting the session cookie for some reason 
-// TODO: fix this lates it is stupid
-async function read_files(limiter){
+function read_files(limiter){
     let data = new FormData();
     const input = document.getElementById("file_entry");
     data.append("rede", input.files[0]);
     data.append("limiter", JSON.stringify(limiter))
-    await fetch("http://localhost:1337/upload_csv/", {method: "POST", credentials: "include", body: data, header: {
+
+    let map = document.getElementById("map")
+    let map_container = document.getElementById("map-container")
+    
+    var loading = document.createElement('div')
+    loading.className = 'loading-animation'
+
+    map_container.removeChild(map)
+    map_container.appendChild(loading)
+
+    fetch("http://localhost:1337/upload_csv/", {method: "POST", credentials: "include", body: data, header: {
             'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data',
-          },})
+            'Content-Type': 'multipart/form-data',},})
+        .then(() => {
+            map_container.removeChild(loading)
+            map_container.appendChild(map)
+        })
 }
 
 
@@ -53,6 +64,32 @@ function hide_download_button(){
     const dowload_button = document.getElementById("download");
     dowload_button.style.visibility = "hidden"
 }
+
+
+function posY(ctl){
+    var pos = ctl.offsetHeight;
+    while(ctl != null){
+        pos += ctl.offsetTop;
+
+        ctl = ctl.offsetParent; 
+    }
+
+    return pos;
+}
+
+
+function posX(ctl){
+    var pos = 0;
+    while(ctl != null){
+        pos += ctl.offsetLeft;
+
+        ctl = ctl.offsetParent; 
+    }
+
+    return pos;
+
+}
+
 
 
 async function fill_selects(){

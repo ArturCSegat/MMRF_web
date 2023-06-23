@@ -65,6 +65,8 @@ async function downloadFile(){
             Uspliters:selected.uspliters, Bspliters:selected.bspliters}
         console.log(JSON.stringify(data))
         const a = document.createElement('a');
+        
+
         const response = await fetch("http://localhost:1337/txt-sub-graph/", {
             method:"POST",
             credentials:'include',
