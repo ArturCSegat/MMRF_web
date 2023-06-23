@@ -66,32 +66,6 @@ function hide_download_button(){
 }
 
 
-function posY(ctl){
-    var pos = ctl.offsetHeight;
-    while(ctl != null){
-        pos += ctl.offsetTop;
-
-        ctl = ctl.offsetParent; 
-    }
-
-    return pos;
-}
-
-
-function posX(ctl){
-    var pos = 0;
-    while(ctl != null){
-        pos += ctl.offsetLeft;
-
-        ctl = ctl.offsetParent; 
-    }
-
-    return pos;
-
-}
-
-
-
 async function fill_selects(){
     let select = document.getElementById("cables")
     const cables_response = await fetch("http://localhost:1337/get-all-cables/")
@@ -154,7 +128,7 @@ function get_selected(){
     const selectUspliter = document.getElementById('uspliters');
     const selectedUspliters = Array.from(selectUspliter.selectedOptions).map(option => parseInt(option.value));
 
-    const selectBspliter = document.getElementById('uspliters');
+    const selectBspliter = document.getElementById('bspliters');
     const selectedBspliters = Array.from(selectBspliter.selectedOptions).map(option => parseInt(option.value));
 
     return {cables:selectedCables, boxes: selectedBoxes, uspliters: selectedUspliters, bspliters: selectedBspliters}
