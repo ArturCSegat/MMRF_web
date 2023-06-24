@@ -50,6 +50,7 @@ async function get_branches_from(poste, cost, limit){
         cost: cost,
         limit: limit
     });
+    console.log(paths.paths)
     return paths.paths;
 }
 

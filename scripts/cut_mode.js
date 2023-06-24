@@ -29,7 +29,7 @@ function handle_click_cut(position, square_limits, square_prop, map){
 
     document.getElementById("file_entry").addEventListener("change", async () => {
         console.log(JSON.stringify(square_limits))
-        await read_files(square_limits)
+        read_files(square_limits, map)
     });
 }
 

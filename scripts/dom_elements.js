@@ -1,27 +1,34 @@
+import { draw_infostructure_lines } from "./draw.js"
+
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
-function read_files(limiter){
+function read_files(limiter, map){
     let data = new FormData();
     const input = document.getElementById("file_entry");
     data.append("rede", input.files[0]);
     data.append("limiter", JSON.stringify(limiter))
 
-    let map = document.getElementById("map")
+    let map_div = document.getElementById("map")
     let map_container = document.getElementById("map-container")
     
     var loading = document.createElement('div')
     loading.className = 'loading-animation'
 
-    map_container.removeChild(map)
+    map_container.removeChild(map_div)
     map_container.appendChild(loading)
 
     fetch("http://localhost:1337/upload_csv/", {method: "POST", credentials: "include", body: data, header: {
             'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data',},})
-        .then(() => {
-            map_container.removeChild(loading)
-            map_container.appendChild(map)
+            'Content-Type': 'multipart/form-data',},
+    })
+    .then(response => {
+        map_container.removeChild(loading)
+        map_container.appendChild(map_div)
+        response.json().then(response_data => {
+            const paths = response_data.drawablePaths
+            draw_infostructure_lines(paths, map)
         })
+    })
 }
 
 
@@ -120,16 +127,16 @@ async function fill_selects(){
 
 function get_selected(){
     const selectCable = document.getElementById('cables');
-    const selectedCables = Array.from(selectCable.selectedOptions).map(option => parseInt(option.value));
+    const selectedCables = Array.from(selectCable.selectedOptions).map_div(option => parseInt(option.value));
 
     const selectBox = document.getElementById('spliceboxes');
-    const selectedBoxes = Array.from(selectBox.selectedOptions).map(option => parseInt(option.value));
+    const selectedBoxes = Array.from(selectBox.selectedOptions).map_div(option => parseInt(option.value));
 
     const selectUspliter = document.getElementById('uspliters');
-    const selectedUspliters = Array.from(selectUspliter.selectedOptions).map(option => parseInt(option.value));
+    const selectedUspliters = Array.from(selectUspliter.selectedOptions).map_div(option => parseInt(option.value));
 
     const selectBspliter = document.getElementById('bspliters');
-    const selectedBspliters = Array.from(selectBspliter.selectedOptions).map(option => parseInt(option.value));
+    const selectedBspliters = Array.from(selectBspliter.selectedOptions).map_div(option => parseInt(option.value));
 
     return {cables:selectedCables, boxes: selectedBoxes, uspliters: selectedUspliters, bspliters: selectedBspliters}
 }

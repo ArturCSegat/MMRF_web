@@ -52,12 +52,31 @@ function draw_branching_lines(node_paths, map){
         const line = new google.maps.Polyline({
             path: drawable_path,
             strokeColor: get_color(path.Cost, get_limit()),
-            strokeOpacity: 1.0,
-            strokeWeight: 3,
+            strokeOpacity: 1.5,
+            strokeWeight: 4,
             map: map
         });
     }
 }
 
 
-export { get_color, draw_square, draw_branching_lines }
+function draw_infostructure_lines(coord_paths, map){
+    let len = coord_paths.length;
+    for(let i = len - 1; i>=0; --i){
+        let path = coord_paths[i];
+        let drawable_path = [];        // the path wont come in a drawable state due to JSON, and the gmaps api, so we do this
+        path.forEach(coord => {
+           drawable_path.push({lat: coord.lat, lng: coord.lng});
+        });
+        const line = new google.maps.Polyline({
+            path: drawable_path,
+            strokeColor: "#0000a5",
+            strokeOpacity: 0.75,
+            strokeWeight: 2,
+            map: map
+        });
+    }
+}
+
+
+export { get_color, draw_square, draw_branching_lines, draw_infostructure_lines }
