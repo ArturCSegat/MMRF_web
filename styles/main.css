@@ -9,15 +9,21 @@ h3 {
     margin-top: 1em;
 }
 
-/* Set the size of the div element that contains the map */
-#map {
+#map-container {
     height: 50%;
-    /* The height is 400 pixels */
-    width: 50%;
-    /* The width is the width of the web page */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#map {
+    height: 100%;
+    width: 100%;
     border-radius: 2em;
     margin-top: 1.5em;
-  }
+}
 
 
 .limit-container {
@@ -79,8 +85,8 @@ h3 {
 
 
 .loading-animation {
-  width: 50px;
-  height: 50px;
+  width: 10%;
+  height: 37.5%;
   border: 3px solid #ccc;
   border-top-color: #888;
   border-radius: 50%;
@@ -95,4 +101,3 @@ h3 {
     transform: rotate(360deg);
   }
 }
-

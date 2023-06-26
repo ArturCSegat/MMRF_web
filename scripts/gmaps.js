@@ -1,4 +1,4 @@
-import { click_state_machine } from "./mode_state_machine.js";
+import { click_state_machine, session_mode_machine } from "./mode_state_machine.js";
 import { set_mode } from "./dom_elements.js";
 import { handle_click_download } from "./branch_mode.js"; 
 
@@ -14,13 +14,11 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     google.maps.event.addListener(map, "click", (event) => {
         click_state_machine(event.latLng.toJSON(), square_limits, map); 
     });
+    window.addEventListener("load", async () => {
+        await session_mode_machine(map)
+    });
 
     document.getElementById("download").addEventListener("click", handle_click_download);
-
-
 }
-
-
-
 
 window.initMap = initMap;

@@ -43,22 +43,20 @@ function handle_limit_click(){
 
 function get_limit(){
     const limit_obj = document.getElementById("limit")
-    return parseFloat(limit_obj.innerHTML)
+    return parseFloat(limit_obj.innerText)
 }
 
-
+let mode = "CUT"
 function get_mode(){
-    const mode_obj = document.getElementById("mode")
-    return mode_obj.innerText
+    return mode
 }
 
 
-function set_mode(mode){
-    mode = mode.toUpperCase()
+function set_mode(new_mode){
+    mode = new_mode.toUpperCase()
     if (!["BRANCH", "CUT"].includes(mode)){
         mode = "BRANCH"
     }
-    document.getElementById("mode").innerText = mode
 }
 
 function show_download_button(){
@@ -127,22 +125,28 @@ async function fill_selects(){
 
 function get_selected(){
     const selectCable = document.getElementById('cables');
-    const selectedCables = Array.from(selectCable.selectedOptions).map_div(option => parseInt(option.value));
+    const selectedCables = Array.from(selectCable.selectedOptions).map(option => parseInt(option.value));
 
     const selectBox = document.getElementById('spliceboxes');
-    const selectedBoxes = Array.from(selectBox.selectedOptions).map_div(option => parseInt(option.value));
+    const selectedBoxes = Array.from(selectBox.selectedOptions).map(option => parseInt(option.value));
 
     const selectUspliter = document.getElementById('uspliters');
-    const selectedUspliters = Array.from(selectUspliter.selectedOptions).map_div(option => parseInt(option.value));
+    const selectedUspliters = Array.from(selectUspliter.selectedOptions).map(option => parseInt(option.value));
 
     const selectBspliter = document.getElementById('bspliters');
-    const selectedBspliters = Array.from(selectBspliter.selectedOptions).map_div(option => parseInt(option.value));
+    const selectedBspliters = Array.from(selectBspliter.selectedOptions).map(option => parseInt(option.value));
 
     return {cables:selectedCables, boxes: selectedBoxes, uspliters: selectedUspliters, bspliters: selectedBspliters}
 }
 
 
-window.onload = fill_selects
+async function handle_new_session_click(){
+    await fetch("http://localhost:1337/delete-session/", {credentials: "include"})
+    window.location.reload()
+}
+
+
 window.read_files = read_files;
 window.handle_limit_click = handle_limit_click
-export { get_limit, get_mode, set_mode, show_download_button, hide_download_button, get_selected, read_files }
+window.new_session = handle_new_session_click 
+export { get_limit, get_mode, set_mode, show_download_button, hide_download_button, get_selected, read_files, fill_selects }
