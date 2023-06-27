@@ -83,6 +83,14 @@ h3 {
     height: 75%;
 }
 
+.select-option-adder {
+    height: 10%;
+    width: 20%;
+    background-color: rgb(0, 66, 154);
+    padding: 2px;
+    text-align: center;
+}
+
 
 .loading-animation {
   width: 10%;

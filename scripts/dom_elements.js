@@ -145,7 +145,83 @@ async function handle_new_session_click(){
     window.location.reload()
 }
 
+function parseFields(inputString) {
+  const keyValuePairs = inputString.split(' ');
 
+  const obj = {};
+  keyValuePairs.forEach(pair => {
+    const [key, value] = pair.split('=');
+    obj[key.trim()] = isNaN(value) ? value.trim() : parseFloat(value);
+  });
+
+  return obj;
+}
+
+
+
+async function new_splicebox(){
+    const input = prompt("enter new splicebox like this example: 'id=1 cost=2 attenuation=3'")
+    const obj = parseFields(input)
+    const response = await fetch("http://localhost:1337/add-splicebox/", {
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    if (response.status != 200){
+        alert("error while adding: " + await response.json())
+    } else {
+        window.location.reload()
+    }
+}
+
+
+async function new_cable(){
+    const input = prompt("enter new cable like this example: 'id=1 cost=2 attenuation=3'")
+    const obj = parseFields(input)
+    const response = await fetch("http://localhost:1337/add-cable/", {
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    if (response.status != 200){
+        alert("error while adding: " + await response.json())
+    } else {
+        window.location.reload()
+    }
+}
+
+
+async function new_uspliter(){
+    const input = prompt("enter new unbalanced spliter like this example: 'id=1 loss1=2 loss2=3 cost=4'")
+    const obj = parseFields(input)
+    const response = await fetch("http://localhost:1337/add-uspliter/", {
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    if (response.status != 200){
+        alert("error while adding: " + await response.json())
+    } else {
+        window.location.reload()
+    }
+}
+
+
+async function new_bspliter(){
+    const input = prompt("enter new balanced spliter like this example: 'id=1 loss=2 loss2=3 cost=4'")
+    const obj = parseFields(input)
+    const response = await fetch("http://localhost:1337/add-bspliter/", {
+        method: "POST",
+        body: JSON.stringify(obj)
+    })
+    if (response.status != 200){
+        alert("error while adding: " + await response.json())
+    } else {
+        window.location.reload()
+    }
+}
+
+window.new_splicebox = new_splicebox
+window.new_cable = new_cable
+window.new_uspliter = new_uspliter
+window.new_bspliter = new_bspliter
 window.read_files = read_files;
 window.handle_limit_click = handle_limit_click
 window.new_session = handle_new_session_click 
