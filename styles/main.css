@@ -1,6 +1,6 @@
 body {
-    background-color: rgb(70, 79, 86);
-    color:rgb(225, 225, 225);
+    background-color: #222831;
+    color: white;
     font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
@@ -80,8 +80,21 @@ h3 {
 }
 
 .select-container > select {
+    background-color: inherit;
     height: 75%;
+    width: 60%;
+    margin-bottom: 1px;
+    border: 2px solid rgb(0, 66, 154);
+    color: white;
+    border-radius: 25px;
+    padding: 5px;
 }
+
+
+.select-container > select::selection {
+    background-color: rgb(0, 74, 14);
+}
+
 
 .select-option-adder {
     height: 10%;
@@ -89,6 +102,7 @@ h3 {
     background-color: rgb(0, 66, 154);
     padding: 2px;
     text-align: center;
+    margin-top: 10px
 }
 
 
