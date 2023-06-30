@@ -61,13 +61,13 @@ function set_mode(new_mode){
 
 function show_download_button(){
     const dowload_button = document.getElementById("download");
-    dowload_button.style.visibility = "visible"
+    dowload_button.style.display = "flex"
 }
 
 
 function hide_download_button(){
     const dowload_button = document.getElementById("download");
-    dowload_button.style.visibility = "hidden"
+    dowload_button.style.display = "flex"
 }
 
 

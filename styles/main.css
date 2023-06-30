@@ -22,7 +22,6 @@ h3 {
     height: 100%;
     width: 100%;
     border-radius: 2em;
-    margin-top: 1.5em;
 }
 
 
@@ -31,11 +30,26 @@ h3 {
     flex-direction: row;
 }
 
-.info {
-    display: grid;
-    grid-template: auto auto / auto auto;
-    height: 15%;
-    width: 40%;
+.info-container {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    width: 100%;
+}
+
+.info-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4F4557;
+    height: 100%;
+    width: 15%;
+    margin-bottom: 5%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 #mode {
@@ -43,22 +57,8 @@ h3 {
     width: 100px;
 }
 
-.download {
-    height: 25px;
-    width: 150px;
-    text-align: center;
-    background-color: navy;
-    visibility: hidden;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 15%;
-}
-
 #file_container {
-    margin: 0;
-    visibility: hidden;
+    display: none;
     /* display: flex; */
     /* flex-direction: row; */
 }
@@ -87,7 +87,7 @@ h3 {
     border: 2px solid rgb(0, 66, 154);
     color: white;
     border-radius: 25px;
-    padding: 5px;
+    padding: 10px;
 }
 
 

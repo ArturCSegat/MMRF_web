@@ -54,7 +54,8 @@ function draw_branching_lines(node_paths, map){
             strokeColor: get_color(path.Cost, get_limit()),
             strokeOpacity: 1.5,
             strokeWeight: 4,
-            map: map
+            map: map,
+            zIndex: 2
         });
     }
 }
@@ -73,7 +74,8 @@ function draw_infostructure_lines(coord_paths, map){
             strokeColor: "#0000a5",
             strokeOpacity: 0.75,
             strokeWeight: 2,
-            map: map
+            map: map,
+            zIndex: 1,
         });
     }
 }

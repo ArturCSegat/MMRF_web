@@ -24,12 +24,12 @@ async function session_mode_machine(map){
     const session = await fetch("http://localhost:1337/has-session/", {credentials: "include"})
     if (session.status == valid_session){
         set_mode("BRANCH")
-        document.getElementById("file_container").style.visibility = "hidden"
+        document.getElementById("file_container").style.display = "none"
         const response = await fetch("http://localhost:1337/drawable-paths/", {credentials: "include"})
         const response_data = await response.json()
         draw_infostructure_lines(response_data.drawablePaths, map)
         let new_session_button = document.getElementById("new-session-button")
-        new_session_button.style.visibility = "visible"
+        new_session_button.style.display = "flex"
         fill_selects()
     }
     if (session.status == no_session){

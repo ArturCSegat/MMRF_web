@@ -12,14 +12,14 @@
 
 
         <h1>RouteLib Instance Generation</h1>
-        <div class="info">
-            <div id="new-session-button" style="visibility: hidden;" onclick="new_session()">Generate new instance</div>
+        <div class="info-container">
+            <div id="new-session-button" style="display: none;" onclick="new_session()">Generate new instance</div>
             <div class="limit-container" onclick="show_download_button()">
                 <div id="limit" onclick="handle_limit_click()">100</div>meters
             </div>
-            <button class="download" id="download">Download</button>
-            <div id="file_container">
-                <input type="file" id="file_entry">
+            <div id="download" style="display: none;"">Download</div>
+            <div id="file_container" onclick="document.getElementById('file_entry').click();">
+                <input type="file" id="file_entry" style="display: none;">
                 <label>insert your csv file</label>
             </div>
         </div>
