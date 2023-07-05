@@ -1,11 +1,11 @@
 import { request_builder } from "./request_builder.js"
 import { draw_branching_lines, get_color } from "./draw.js"
 import { get_limit, show_download_button, hide_download_button, get_selected } from "./dom_elements.js"
+import { get_empty_prop } from "./cut_mode.js"
 
 let all_clients = []
 let all_paths = []
-let all_entry_nodes_ids = [] 
-
+let olt = {lat: null, lng: null}
 
 async function closest_poste(position, map){
     let end_point = "/closest-node/"
@@ -56,14 +56,20 @@ async function get_branches_from(poste, cost, limit){
 
 
 async function downloadFile(){
+        if (get_empty_prop(olt) !== null){
+            alert('invalid OLT')
+            return
+        }
         const selected = get_selected()
         const data = {
             Paths: all_paths,
+            OLT: olt,
             Clients: all_clients,
-            Entrys: all_entry_nodes_ids, 
             Cables:selected.cables,
             Boxes:selected.boxes,
-            Uspliters:selected.uspliters, Bspliters:selected.bspliters}
+            Uspliters:selected.uspliters,
+            Bspliters:selected.bspliters
+        }
         console.log(JSON.stringify(data))
         const a = document.createElement('a');
         
@@ -86,13 +92,22 @@ async function downloadFile(){
 
 
 async function handle_click_branch(position, map){    
+    if (get_empty_prop(olt) !== null){
+        olt.lat = position.lat
+        olt.lng = position.lng
+        new google.maps.Marker({
+            position: position,
+            label: "OLT",
+            map: map,
+        });
+        return
+    }
     try{
         let poste = await closest_poste(position, map);
 
         let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit());
         draw_branching_lines(pathing, map);
         show_download_button();
-        all_entry_nodes_ids.push(poste.node.id)
         all_clients.push({lat: position.lat, lng: position.lng})
         all_paths.push(pathing)
     }
