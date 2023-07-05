@@ -33,7 +33,7 @@ async function closest_poste(position, map){
 
     new google.maps.Polyline({              // connect branching and user's click
         path: [position, poste_cord],
-        strokeColor: get_color(poste_pair.dist, get_limit()),
+        strokeColor: "#00994d",
         strokeOpacity: 1.0,
         strokeWeight: 3,
         map: map
@@ -106,7 +106,7 @@ async function handle_click_branch(position, map){
         let poste = await closest_poste(position, map);
 
         let pathing = await get_branches_from(poste.node.id, poste.dist, get_limit());
-        draw_branching_lines(pathing, map);
+        // draw_branching_lines(pathing, map);
         show_download_button();
         all_clients.push({lat: position.lat, lng: position.lng})
         all_paths.push(pathing)
