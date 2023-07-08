@@ -17,31 +17,23 @@ async function closest_poste(position, map){
         throw new Error("invalid client")
     }
 
-    new google.maps.Marker({                // creates marker at postions of user's click
-        position: position,
-        label: "client",
-        map: map,
-    });
+    const client_marker = new L.marker([position.lat, position.lng], {title: "client"})
+    client_marker.addTo(map)
 
-    let poste_cord = new google.maps.LatLng(poste_pair.node.lat, poste_pair.node.lng); 
+    const poste_marker = new L.marker([poste_pair.node.lat, poste_pair.node.lng], {title: "poste"})
+    poste_marker.addTo(map)
 
-    new google.maps.Marker({                // creates marker at postions of closest poste
-        position: poste_cord,
-        label: "poste",
-        map: map,
-    });
+    const poste_cord = new L.LatLng(poste_pair.node.lat, poste_pair.node.lng)
 
-    new google.maps.Polyline({              // connect branching and user's click
-        path: [position, poste_cord],
-        strokeColor: "#00994d",
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        map: map
-
+    const line = new L.Polyline([position, poste_cord], {
+        color: 'green',
+        weight: 3,
+        opacity: 1,
+        smoothFactor: 1
     })
+    map.addLayer(line);
     return poste_pair
 }
-
 
 
 async function get_branches_from(poste, cost, limit){
@@ -95,11 +87,13 @@ async function handle_click_branch(position, map){
     if (get_empty_prop(olt) !== null){
         olt.lat = position.lat
         olt.lng = position.lng
-        new google.maps.Marker({
-            position: position,
-            label: "OLT",
-            map: map,
-        });
+        // new google.maps.Marker({
+        //     position: position,
+        //     label: "OLT",
+        //     map: map,
+        // });
+        const olt_marker = new L.marker([position.lat, position.lng], {title: "OLT", clickable: true, draggable: true})
+        olt_marker.addTo(map)
         return
     }
     try{

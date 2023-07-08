@@ -1,7 +1,6 @@
 import { set_mode, read_files } from "./dom_elements.js";
 import { draw_square } from "./draw.js";
 
-
 function get_empty_prop(square){
         for (let coord in square){
             if (square[coord] === null){
@@ -13,10 +12,12 @@ function get_empty_prop(square){
 
 
 function handle_click_cut(position, square_limits, square_prop, map){
-    new google.maps.Marker({    // marks the click
-        position: position,
-        map: map
-    });
+    // new google.maps.Marker({    // marks the click
+    //     position: position,
+    //     map: map
+    // });
+    const corner_marker = new L.marker([position.lat, position.lng])
+    corner_marker.addTo(map)
 
     square_limits[square_prop] = position
     

@@ -6,19 +6,18 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     set_mode("CUT");
     let square_limits = {top: null, bot: null}
 
-    let map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(-29.91113120515485, -50.70384997933515),
-        zoom: 10,
+    let map = new L.map('map', { center: [-29.91113120515485, -50.70384997933515], zoom:10})
+    let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    map.addLayer(layer)
+
+    map.on("click", (event) => {
+        console.log(event.latlng)
+        click_state_machine(event.latlng, square_limits, map); 
     });
 
-    google.maps.event.addListener(map, "click", (event) => {
-        click_state_machine(event.latLng.toJSON(), square_limits, map); 
-    });
-    window.addEventListener("load", async () => {
-        await session_mode_machine(map)
-    });
-
+    await session_mode_machine(map)
+    
     document.getElementById("download").addEventListener("click", handle_click_download);
 }
 
-window.initMap = initMap;
+window.onload = initMap;

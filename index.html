@@ -2,15 +2,14 @@
 
 
     <head>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <title>RouteLib</title>
-        <script type="module" src="./scripts/gmaps.js"></script>
+        <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+        <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script type="module" src="./scripts/maps.js"></script>
         <script type="module" src="scripts/dom_elements.js"></script>
         <link rel="stylesheet" href="./styles/main.css">
     </head>
     <body>
-
-
         <h1>RouteLib Instance Generation</h1>
         <div class="info-container">
             <div id="new-session-button" style="display: none;" onclick="new_session()">Generate new instance</div>
@@ -48,13 +47,5 @@
                 <div class="select-option-adder" onclick="new_splicebox()">Add +</div>
             </div>
         </div>
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFkDbhd89qf8ghlqNCarEdBGqfY4UieWU&callback=initMap&v=weekly"
-            defer
-    ></script>
-
-
-
-
     </body>
 </html>

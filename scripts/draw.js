@@ -10,13 +10,13 @@ function draw_square(square_cord, map){     // draws a square on a given google 
     const inv_b = {lat: b.lat, lng: a.lng};
     const path = [a, inv_a, b, inv_b, a];
 
-    const line = new google.maps.Polyline({
-        path: path,
-        strokeColor: '#ff0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        map: map
-    });
+    const line = new L.Polyline(path, {
+        color: '#ff0000',
+        weight: 3,
+        opacity: 1,
+        smoothFactor: 1
+    })
+    map.addLayer(line);
 }
 
 
@@ -62,6 +62,7 @@ function draw_branching_lines(node_paths, map){
 
 
 function draw_infostructure_lines(coord_paths, map){
+    let infostructure = new L.layerGroup([])
     let len = coord_paths.length;
     for(let i = len - 1; i>=0; --i){
         let path = coord_paths[i];
@@ -69,15 +70,23 @@ function draw_infostructure_lines(coord_paths, map){
         path.forEach(coord => {
            drawable_path.push({lat: coord.lat, lng: coord.lng});
         });
-        const line = new google.maps.Polyline({
-            path: drawable_path,
-            strokeColor: "#0000a5",
-            strokeOpacity: 0.75,
-            strokeWeight: 2,
-            map: map,
-            zIndex: 1,
-        });
+        // const line = new google.maps.Polyline({
+        //     path: drawable_path,
+        //     strokeColor: "#0000a5",
+        //     strokeOpacity: 0.75,
+        //     strokeWeight: 2,
+        //     map: map,
+        //     zIndex: 1,
+        // });
+        const line = new L.Polyline(drawable_path, {
+            color: '#0000a5',
+            weight: 3,
+            opacity: 1,
+            smoothFactor: 1
+        })
+        infostructure.addLayer(line)
     }
+    map.addLayer(infostructure)
 }
 
 
