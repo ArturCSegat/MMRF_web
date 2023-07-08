@@ -17,10 +17,12 @@ async function closest_poste(position, map){
         throw new Error("invalid client")
     }
 
-    const client_marker = new L.marker([position.lat, position.lng], {title: "client"})
+    const house_icon = new L.icon({iconUrl: "../styles/marker_icons/house.png", iconSize: [50, 50]})
+    const client_marker = new L.marker([position.lat, position.lng], {title: "client", icon: house_icon})
     client_marker.addTo(map)
 
-    const poste_marker = new L.marker([poste_pair.node.lat, poste_pair.node.lng], {title: "poste"})
+    const poste_icon = new L.icon({iconUrl: "../styles/marker_icons/poste.png", iconSize: [40, 40]})
+    const poste_marker = new L.marker([poste_pair.node.lat, poste_pair.node.lng], {title: "poste", icon: poste_icon})
     poste_marker.addTo(map)
 
     const poste_cord = new L.LatLng(poste_pair.node.lat, poste_pair.node.lng)
@@ -92,7 +94,8 @@ async function handle_click_branch(position, map){
         //     label: "OLT",
         //     map: map,
         // });
-        const olt_marker = new L.marker([position.lat, position.lng], {title: "OLT", clickable: true, draggable: true})
+        const olt_icon = new L.icon({iconUrl: "../styles/marker_icons/olt.png", iconSize: [40, 40]})
+        const olt_marker = new L.marker([position.lat, position.lng], {title: "OLT", icon:olt_icon})
         olt_marker.addTo(map)
         return
     }
