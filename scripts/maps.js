@@ -11,7 +11,6 @@ async function initMap() { // square_cord is an arra that stores the cordinates 
     map.addLayer(layer)
 
     map.on("click", (event) => {
-        console.log(event.latlng)
         click_state_machine(event.latlng, square_limits, map); 
     });
 

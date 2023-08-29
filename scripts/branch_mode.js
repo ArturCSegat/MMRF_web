@@ -44,7 +44,6 @@ async function get_branches_from(poste, cost, limit){
         cost: cost,
         limit: limit
     });
-    console.log(paths.paths)
     return paths.paths;
 }
 
@@ -59,12 +58,11 @@ async function downloadFile(){
             Paths: all_paths,
             OLT: olt,
             Clients: all_clients,
-            Cables:selected.cables,
-            Boxes:selected.boxes,
-            Uspliters:selected.uspliters,
-            Bspliters:selected.bspliters
+            Cable_id:selected.cable,
+            Splicebox_id:selected.box,
+            Uspliters_id:selected.uspliters,
+            Bspliters_id:selected.bspliters
         }
-        console.log(JSON.stringify(data))
         const a = document.createElement('a');
         
 

@@ -136,7 +136,7 @@ function get_selected(){
     const selectBspliter = document.getElementById('bspliters');
     const selectedBspliters = Array.from(selectBspliter.selectedOptions).map(option => parseInt(option.value));
 
-    return {cables:selectedCables, boxes: selectedBoxes, uspliters: selectedUspliters, bspliters: selectedBspliters}
+    return {cable:selectedCables[0], box: selectedBoxes[0], uspliters: selectedUspliters, bspliters: selectedBspliters}
 }
 
 
@@ -205,7 +205,7 @@ async function new_uspliter(){
 
 
 async function new_bspliter(){
-    const input = prompt("enter new balanced spliter like this example: 'id=1 loss=2 loss2=3 cost=4'")
+    const input = prompt("enter new balanced spliter like this example: 'id=1 loss=2 split=3 cost=4'")
     const obj = parseFields(input)
     const response = await fetch("http://localhost:1337/add-bspliter/", {
         method: "POST",

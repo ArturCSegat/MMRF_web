@@ -29,7 +29,6 @@ function handle_click_cut(position, square_limits, square_prop, map){
     document.getElementById("file_container").style.display = "flex"
 
     document.getElementById("file_entry").addEventListener("change", async () => {
-        console.log(JSON.stringify(square_limits))
         read_files(square_limits, map)
         document.getElementById("new-session-button").style.display = "flex"
     });
