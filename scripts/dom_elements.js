@@ -3,6 +3,7 @@ import { draw_infostructure_lines } from "./draw.js"
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
 function read_files(limiter, map){
+    document.getElementById("file_container").style.display = "none"
     let data = new FormData();
     const input = document.getElementById("file_entry");
     data.append("rede", input.files[0]);
@@ -72,6 +73,16 @@ function hide_download_button(){
 
 
 async function fill_selects(){
+
+    function pretify_json(obj) {
+        let r_str = "";
+        for (const prop in obj) {
+            r_str = r_str.concat(prop.concat(": ".concat(obj[prop] + " | ")));
+        }
+        r_str = r_str.slice(0, -3);
+        return r_str;
+    }
+
     let select = document.getElementById("cables")
     const cables_response = await fetch("http://localhost:1337/get-all-cables/")
     const json_cables = await cables_response.json()
@@ -80,7 +91,7 @@ async function fill_selects(){
     for(let i = 0; i<cables.length; i++){
         let opt = document.createElement('option');
         opt.value = cables[i].id;
-        opt.innerHTML = JSON.stringify(cables[i]);
+        opt.innerHTML = pretify_json(cables[i]);
         select.appendChild(opt);
     }
 
@@ -93,7 +104,7 @@ async function fill_selects(){
     for(let i = 0; i<boxes.length; i++){
         let opt = document.createElement('option');
         opt.value = boxes[i].id;
-        opt.innerHTML = JSON.stringify(boxes[i]);
+        opt.innerHTML = pretify_json(boxes[i]);
         select.appendChild(opt);
     }
 
@@ -105,7 +116,7 @@ async function fill_selects(){
     for(let i = 0; i<uspliters.length; i++){
         let opt = document.createElement('option');
         opt.value = uspliters[i].id;
-        opt.innerHTML = JSON.stringify(uspliters[i]);
+        opt.innerHTML = pretify_json(uspliters[i]);
         select.appendChild(opt);
     }
 
@@ -117,7 +128,7 @@ async function fill_selects(){
     for(let i = 0; i<bspliters.length; i++){
         let opt = document.createElement('option');
         opt.value = bspliters[i].id;
-        opt.innerHTML = JSON.stringify(bspliters[i]);
+        opt.innerHTML = pretify_json(bspliters[i]);
         select.appendChild(opt);
     }
 }

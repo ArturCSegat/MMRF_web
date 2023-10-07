@@ -24,12 +24,6 @@ h3 {
     border-radius: 2em;
 }
 
-
-.limit-container {
-    display: flex;
-    flex-direction: row;
-}
-
 .info-container {
     margin-top: 5%;
     display: flex;
@@ -44,27 +38,39 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #4F4557;
+    font-size: large;
     height: 100%;
     width: 15%;
     margin-bottom: 5%;
     margin-left: 2%;
     margin-right: 2%;
+    padding: 5px;
+    text-align: center;
 }
 
-#mode {
-    height: 50px;
-    width: 100px;
+.limit-container {
+    display: flex;
+    flex-direction: row;
+    background-color: darkorange;
 }
 
 #file_container {
     display: none;
     /* display: flex; */
     /* flex-direction: row; */
+    background-color: darkgreen;
 }
 
 #file_container > input {
     margin-top: 10px;
+}
+
+#download {
+    background-color: darkblue;
+}
+
+#new-session-button {
+    background-color: darkred;
 }
 
 .select-container {
