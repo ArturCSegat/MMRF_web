@@ -1,4 +1,5 @@
 import { draw_infostructure_lines } from "./draw.js"
+import { API_HOST } from "./host_envs.js";
 
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
@@ -18,7 +19,7 @@ function read_files(limiter, map){
     map_container.removeChild(map_div)
     map_container.appendChild(loading)
 
-    fetch("http://localhost:1337/upload_csv/", {method: "POST", credentials: "include", body: data, header: {
+    fetch(API_HOST + "/upload_csv/", {method: "POST", credentials: "include", body: data, header: {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data',},
     })
@@ -84,7 +85,7 @@ async function fill_selects(){
     }
 
     let select = document.getElementById("cables")
-    const cables_response = await fetch("http://localhost:1337/get-all-cables/")
+    const cables_response = await fetch(API_HOST + "/get-all-cables/")
     const json_cables = await cables_response.json()
     const cables = json_cables.cables
     
@@ -97,7 +98,7 @@ async function fill_selects(){
 
 
     select = document.getElementById("spliceboxes")
-    const boxes_response = await fetch("http://localhost:1337/get-all-spliceboxes/")
+    const boxes_response = await fetch(API_HOST + "/get-all-spliceboxes/")
     const json_boxes = await boxes_response.json()
     const boxes = json_boxes.boxes
     
@@ -109,7 +110,7 @@ async function fill_selects(){
     }
 
     select = document.getElementById("uspliters")
-    const uspliters_response = await fetch("http://localhost:1337/get-all-uspliters/")
+    const uspliters_response = await fetch(API_HOST + "/get-all-uspliters/")
     const json_uspliters = await uspliters_response.json()
     const uspliters = json_uspliters.uspliters
     
@@ -121,7 +122,7 @@ async function fill_selects(){
     }
 
     select = document.getElementById("bspliters")
-    const bspliters_response = await fetch("http://localhost:1337/get-all-bspliters/")
+    const bspliters_response = await fetch(API_HOST + "/get-all-bspliters/")
     const json_bspliters = await bspliters_response.json()
     const bspliters = json_bspliters.bspliters
     
@@ -152,7 +153,7 @@ function get_selected(){
 
 
 async function handle_new_session_click(){
-    await fetch("http://localhost:1337/delete-session/", {credentials: "include"})
+    await fetch(API_HOST + "/delete-session/", {credentials: "include"})
     window.location.reload()
 }
 
@@ -173,7 +174,7 @@ function parseFields(inputString) {
 async function new_splicebox(){
     const input = prompt("enter new splicebox like this example: 'id=1 cost=2 attenuation=3'")
     const obj = parseFields(input)
-    const response = await fetch("http://localhost:1337/add-splicebox/", {
+    const response = await fetch(API_HOST + "/add-splicebox/", {
         method: "POST",
         body: JSON.stringify(obj)
     })
@@ -188,7 +189,7 @@ async function new_splicebox(){
 async function new_cable(){
     const input = prompt("enter new cable like this example: 'id=1 cost=2 attenuation=3'")
     const obj = parseFields(input)
-    const response = await fetch("http://localhost:1337/add-cable/", {
+    const response = await fetch(API_HOST + "/add-cable/", {
         method: "POST",
         body: JSON.stringify(obj)
     })
@@ -203,7 +204,7 @@ async function new_cable(){
 async function new_uspliter(){
     const input = prompt("enter new unbalanced spliter like this example: 'id=1 loss1=2 loss2=3 cost=4'")
     const obj = parseFields(input)
-    const response = await fetch("http://localhost:1337/add-uspliter/", {
+    const response = await fetch(API_HOST + "/add-uspliter/", {
         method: "POST",
         body: JSON.stringify(obj)
     })
@@ -218,7 +219,7 @@ async function new_uspliter(){
 async function new_bspliter(){
     const input = prompt("enter new balanced spliter like this example: 'id=1 loss=2 split=3 cost=4'")
     const obj = parseFields(input)
-    const response = await fetch("http://localhost:1337/add-bspliter/", {
+    const response = await fetch(API_HOST + "/add-bspliter/", {
         method: "POST",
         body: JSON.stringify(obj)
     })

@@ -1,5 +1,5 @@
 import { request_builder } from "./request_builder.js"
-import { draw_branching_lines, get_color } from "./draw.js"
+import { API_HOST, SELF_HOST } from "./host_envs.js"
 import { get_limit, show_download_button, hide_download_button, get_selected } from "./dom_elements.js"
 import { get_empty_prop } from "./cut_mode.js"
 
@@ -17,11 +17,11 @@ async function closest_poste(position, map){
         throw new Error("invalid client")
     }
 
-    const house_icon = new L.icon({iconUrl: "../styles/marker_icons/house.png", iconSize: [50, 50]})
+    const house_icon = new L.icon({iconUrl: SELF_HOST + "/styles/marker_icons/house.png", iconSize: [50, 50]})
     const client_marker = new L.marker([position.lat, position.lng], {title: "client", icon: house_icon})
     client_marker.addTo(map)
 
-    const poste_icon = new L.icon({iconUrl: "../styles/marker_icons/poste.png", iconSize: [40, 40]})
+    const poste_icon = new L.icon({iconUrl: SELF_HOST + "/styles/marker_icons/poste.png", iconSize: [40, 40]})
     const poste_marker = new L.marker([poste_pair.node.lat, poste_pair.node.lng], {title: "poste", icon: poste_icon})
     poste_marker.addTo(map)
 
@@ -66,7 +66,7 @@ async function downloadFile(){
         const a = document.createElement('a');
         
 
-        const response = await fetch("http://localhost:1337/txt-sub-graph/", {
+        const response = await fetch(API_HOST + "/txt-sub-graph/", {
             method:"POST",
             credentials:'include',
             body:JSON.stringify(data)
@@ -92,7 +92,7 @@ async function handle_click_branch(position, map){
         //     label: "OLT",
         //     map: map,
         // });
-        const olt_icon = new L.icon({iconUrl: "../styles/marker_icons/olt.png", iconSize: [40, 40]})
+        const olt_icon = new L.icon({iconUrl: SELF_HOST + "/styles/marker_icons/olt.png", iconSize: [40, 40]})
         const olt_marker = new L.marker([position.lat, position.lng], {title: "OLT", icon:olt_icon})
         olt_marker.addTo(map)
         return
