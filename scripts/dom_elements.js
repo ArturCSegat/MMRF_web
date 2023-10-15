@@ -3,12 +3,13 @@ import { API_HOST } from "./host_envs.js";
 
 // FILE FOR OPERATIONS REGARDING DOM ELEMENTS
 
-function read_files(limiter, map){
+function read_files(limiter, olt, map){
     document.getElementById("file_container").style.display = "none"
     let data = new FormData();
     const input = document.getElementById("file_entry");
     data.append("rede", input.files[0]);
     data.append("limiter", JSON.stringify(limiter))
+    data.append("OLT", JSON.stringify(olt))
 
     let map_div = document.getElementById("map")
     let map_container = document.getElementById("map-container")

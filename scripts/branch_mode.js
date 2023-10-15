@@ -5,7 +5,6 @@ import { get_empty_prop } from "./cut_mode.js"
 
 let all_clients = []
 let all_paths = []
-let olt = {lat: null, lng: null}
 
 async function closest_poste(position, map){
     let end_point = "/closest-node/"
@@ -49,14 +48,9 @@ async function get_branches_from(poste, cost, limit){
 
 
 async function downloadFile(){
-        if (get_empty_prop(olt) !== null){
-            alert('invalid OLT')
-            return
-        }
         const selected = get_selected()
         const data = {
             Paths: all_paths,
-            OLT: olt,
             Clients: all_clients,
             Cable_id:selected.cable,
             Splicebox_id:selected.box,
@@ -84,19 +78,6 @@ async function downloadFile(){
 
 
 async function handle_click_branch(position, map){    
-    if (get_empty_prop(olt) !== null){
-        olt.lat = position.lat
-        olt.lng = position.lng
-        // new google.maps.Marker({
-        //     position: position,
-        //     label: "OLT",
-        //     map: map,
-        // });
-        const olt_icon = new L.icon({iconUrl: SELF_HOST + "/styles/marker_icons/olt.png", iconSize: [40, 40]})
-        const olt_marker = new L.marker([position.lat, position.lng], {title: "OLT", icon:olt_icon})
-        olt_marker.addTo(map)
-        return
-    }
     try{
         let poste = await closest_poste(position, map);
 
@@ -110,11 +91,5 @@ async function handle_click_branch(position, map){
         return
     }
 }
-const handle_click_download = async () => { 
-    // acutualy handles the download button not the map itself
-    await downloadFile();
-    hide_download_button();
-    return;
-}
 
-export { handle_click_branch, handle_click_download }
+export { handle_click_branch, downloadFile }
